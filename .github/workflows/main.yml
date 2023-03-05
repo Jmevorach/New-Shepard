@@ -1,0 +1,35 @@
+# Build for Shepard
+
+name: CI
+
+# Controls when the action will run. Will happen when a new release is published.
+on:
+  release:
+    types: [published]
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # This workflow contains a single job called "publish_to_pypi"
+  publish_to_pypi:
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+
+      #checkout the published branch
+      - name: Checkout
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      # run python3 build
+      - run: python3 -m pip install --upgrade build && python3 -m build
+
+      # publish results of python3 build command, use PYPI_API_TOKEN to authenticate.
+      - name: Publish package
+        uses: pypa/gh-action-pypi-publish@release/v1
+        with:
+          password: ${{ secrets.PYPI_API_TOKEN }}
