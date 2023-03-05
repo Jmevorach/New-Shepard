@@ -457,7 +457,7 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         pass
 
     #check if path_to_deployment_folder is not a filepath
-    if os.isdir(path_to_deployment_folder):
+    if os.path.isdir(path_to_deployment_folder):
         path_to_deployment_folder_is_a_filepath = True
     else:
         path_to_deployment_folder_is_a_filepath = False
