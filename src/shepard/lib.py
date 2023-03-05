@@ -854,7 +854,7 @@ def secretify(account_number,role_to_assume_to_target_account,path_to_local_secr
 ######################################################SECRETIFY LIBRARIES STOP HERE######################################################
 
 ######################################################AUTO_CONFIGURE LIBRARIES START HERE######################################################
-def auto_configure(cloudformation_stack_name,account_number,role_to_assume_to_target_account,dont_assume,mfa_token,serial_number,\
+def auto_configure(cloudformation_stack_name,account_number,role_to_assume_to_target_account,dont_assume,mfa_token,serial_number\
                    ,path_to_deployment_folder='',called_by_deploy_function=False):
 
     #set role if account_number and role_to_assume_to_target_account are set and dont_assume is not set to False and autoconfigure is not being called by the deploy function
