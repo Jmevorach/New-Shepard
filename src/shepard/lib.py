@@ -499,22 +499,9 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
          —require-approval never' + ' && ' + 'cd ' + current_dir)
 
     else:
-        current_dir = os.getcwd()
-
-        #do a sparse checkout of just the folder we want from github in Shepard-Setups
-        os.system('git clone --filter=blob:none --no-checkout --depth 1 --sparse git@github.com:Jmevorach/Shepard-Setups.git\
-                  && cd Shepard-Setups && git sparse-checkout add infrastructure && git checkout && cd ..')
-        path_to_infrastructure_folder = os.path.join(os.getcwd(),'New-Shepard','infrastructure')
-
-        # instantiate infrastructure
-        subprocess.check_output('cd ' + path_to_infrastructure_folder + ' && \
-        cdk bootstrap && cdk deploy -c account='+account_number+'\
-         -c region='+region+'\
-        -c stack_name='+cloudformation_stack_name+'\
-         —require-approval never' + ' && ' + 'cd ' + current_dir)
-
-        #destroy extra cloned folder
-        shutil.rmtree("Shepard-Setups")
+        raise ValueError('The target deployment folder must at a minimum contain a subdirectory named "infrastructure" \
+                          that contains the code necessary to build your flock. For an example of this folder see here:\
+                          https://github.com/Jmevorach/New-Shepard/tree/main/infrastructure')
 
     #deploy code to ECR
     path_to_docker_folder = os.path.join(path_to_deployment_folder,'code')
