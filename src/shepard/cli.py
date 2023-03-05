@@ -164,7 +164,7 @@ def run(command,account_number, use_env_variables, role_to_assume_to_target_acco
     #Execute commands based off user input.
     if command == 'deploy':
 
-        minimum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','cloudformation_stack_name','path_to_deployment_folder','ecr_repo_to_push_to']
+        minimum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','cloudformation_stack_name','path_to_deployment_folder']
         maximum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','cloudformation_stack_name','path_to_deployment_folder','ecr_repo_to_push_to','dont_assume','mfa_token','serial_number']
         variables_exempt_from_parsing = ['use_env_variables']
 
