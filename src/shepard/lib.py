@@ -489,7 +489,7 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         #get current dir
         current_dir = os.getcwd()
 
-        path_to_infrastructure_folder = os.path.exists(os.path.join(path_to_deployment_folder,'infrastructure'))
+        path_to_infrastructure_folder = os.path.join(path_to_deployment_folder,'infrastructure')
 
         # instantiate infrastructure
         subprocess.check_output('cd ' + path_to_infrastructure_folder + ' && \
