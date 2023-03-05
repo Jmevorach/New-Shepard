@@ -464,9 +464,8 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
 
     #sparse checkout from shepard_setups if it is not a filepath
     if not path_to_deployment_folder_is_a_filepath:
-        os.system('git clone --filter=blob:none --no-checkout --depth 1 --sparse https://github.com/Jmevorach/Shepard-Setups.git\
-                  && cd Shepard-Setups && git sparse-checkout add ' + path_to_deployment_folder + ' git checkout && cd ..')
-        path_to_deployment_folder = os.path.join(os.getcwd(),'Shepard-Setups',path_to_deployment_folder)
+        os.system('git clone https://github.com/Jmevorach/Shepard-Setups.git')
+        path_to_deployment_folder = os.path.join(os.getcwd(),'Shepard-Setups', path_to_deployment_folder)
 
     #check if code folder exists in deployment folder
     if os.path.exists(os.path.join(path_to_deployment_folder,'code')):
