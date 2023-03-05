@@ -6,7 +6,6 @@ authors = [
 ]
 description = "Automating the creation of batch processing workflows in AWS!"
 readme = "README.md"
-requires-python = ">=3.11"
 classifiers = [
     "Programming Language :: Python :: 3",
     "License :: OSI Approved :: MIT License"
