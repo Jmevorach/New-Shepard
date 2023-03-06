@@ -16,6 +16,7 @@ from awscli.clidriver import create_clidriver
 import io
 import time
 import sys
+import logging
 
 ######################################################HELPER LIBRARIES START HERE######################################################
 def parse_inputs(command,minimum_variables_to_be_declared,maximum_variables_to_be_declared,variables_exempt_from_parsing,initial_context,current_context):
@@ -527,13 +528,48 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         env_copy['CDK_DEPLOY_ACCOUNT']=account_number
         env_copy['CDK_DEPLOY_REGION']=region
         env_copy['CDK_STACK_NAME']=cloudformation_stack_name
-        subprocess.run('cdk bootstrap',
-        capture_output=True, check=True, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-        subprocess.run('cdk synth',
-        capture_output=True, check=True, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-        subprocess.run('cdk deploy --require-approval never',
-        capture_output=True, check=True, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-        os.chdir(current_dir)
+
+        #bootstrap our environment if needed
+        try:
+            process = subprocess.Popen('cdk bootstrap',
+            stdout=subprocess.PIPE, cwd=path_to_infrastructure_folder, env=env_copy)
+            for line in iter(process.stdout.readline, ""):
+                sys.stdout.write(line)
+            if process.returncode != 0:
+                raise subprocess.CalledProcessError(process.returncode, process.args)
+        except subprocess.CalledProcessError as e:
+            print(traceback.format_exc())
+            output = e.output
+            logging.log(level=logging.ERROR, msg=str(output))
+            raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, output))
+
+        #Run CDK synth
+        try:
+            process = subprocess.Popen('cdk synth',
+            stdout=subprocess.PIPE, cwd=path_to_infrastructure_folder, env=env_copy)
+            for line in iter(process.stdout.readline, ""):
+                sys.stdout.write(line)
+            if process.returncode != 0:
+                raise subprocess.CalledProcessError(process.returncode, process.args)
+        except subprocess.CalledProcessError as e:
+            print(traceback.format_exc())
+            output = e.output
+            logging.log(level=logging.ERROR, msg=str(output))
+            raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, output))
+
+        #Run CDK deploy
+        try:
+            process = subprocess.Popen('cdk deploy --require-approval never',
+            stdout=subprocess.PIPE, cwd=path_to_infrastructure_folder, env=env_copy)
+            for line in iter(process.stdout.readline, ""):
+                sys.stdout.write(line)
+            if process.returncode != 0:
+                raise subprocess.CalledProcessError(process.returncode, process.args)
+        except subprocess.CalledProcessError as e:
+            print(traceback.format_exc())
+            output = e.output
+            logging.log(level=logging.ERROR, msg=str(output))
+            raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, output))
 
     else:
         raise ValueError('The target deployment folder must at a minimum contain a subdirectory named "infrastructure" \
