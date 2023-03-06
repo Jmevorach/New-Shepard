@@ -283,10 +283,8 @@ def check_for_environment_variables(account_number, role_to_assume_to_target_acc
 ######################################################DESTROY LIBRARIES START HERE######################################################
 def destroy(account_number,role_to_assume_to_target_account,path_to_deployment_folder,dont_assume,mfa_token,serial_number):
 
-    # get current dir
-    current_dir = os.getcwd()
-
-    path_to_infrastructure_folder = os.path.exists(os.path.join(path_to_deployment_folder, 'infrastructure'))
+    #get default region from CLI
+    region = check_output('aws configure get region', shell=True).strip().decode("utf-8")
 
     #set role if appropriate arguments are provided.
     if account_number and role_to_assume_to_target_account and not dont_assume != 'False':
@@ -294,9 +292,36 @@ def destroy(account_number,role_to_assume_to_target_account,path_to_deployment_f
     else:
         pass
 
-    # destroy infrastructure
-    subprocess.check_output('cd ' + path_to_infrastructure_folder + ' && \
-    cdk destroy --force' + ' && ' + 'cd ' + current_dir)
+    #check if path_to_deployment_folder is not a filepath
+    if os.path.isdir(path_to_deployment_folder):
+        path_to_deployment_folder_is_a_filepath = True
+    else:
+        path_to_deployment_folder_is_a_filepath = False
+
+    #sparse checkout from shepard_setups if it is not a filepath
+    if not path_to_deployment_folder_is_a_filepath:
+        os.system('git clone https://github.com/Jmevorach/Shepard-Setups.git')
+        path_to_deployment_folder = os.path.join(os.getcwd(),'Shepard-Setups', path_to_deployment_folder)
+
+    #check if there's a folder called infrastructure in the deployment folder.
+    if os.path.exists(os.path.join(path_to_deployment_folder,'infrastructure')):
+        infrastructure_folder_detected = True
+    else:
+        infrastructure_folder_detected = False
+
+    #if infrastructure folder is detected use that as the path_to_infrastructure_folder or else use the default one from the github repo:
+    if infrastructure_folder_detected:
+
+        path_to_infrastructure_folder = os.path.join(path_to_deployment_folder,'infrastructure')
+
+        # instantiate infrastructure
+        subprocess.check_output('cdk destroy --force',cwd=path_to_infrastructure_folder)
+        os.chdir(current_dir)
+
+    else:
+        raise ValueError('The target deployment folder must at a minimum contain a subdirectory named "infrastructure" \
+                          that contains the code necessary to build your flock. For an example of this folder see here:\
+                          https://github.com/Jmevorach/New-Shepard/tree/main/infrastructure')
 
     return 0
 ######################################################DESTROY LIBRARIES END HERE######################################################
@@ -486,17 +511,15 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
 
     #if infrastructure folder is detected use that as the path_to_infrastructure_folder or else use the default one from the github repo:
     if infrastructure_folder_detected:
-        #get current dir
-        current_dir = os.getcwd()
 
         path_to_infrastructure_folder = os.path.join(path_to_deployment_folder,'infrastructure')
 
         # instantiate infrastructure
-        subprocess.check_output('cd ' + path_to_infrastructure_folder + ' && \
-        cdk bootstrap && cdk deploy -c account='+account_number+'\
-         -c region='+region+'\
-        -c stack_name='+cloudformation_stack_name+'\
-         —require-approval never' + ' && ' + 'cd ' + current_dir)
+        subprocess.check_output('cdk bootstrap && cdk deploy -c account='+account_number+' '+\
+        '-c region='+region+' '+\
+        '-c stack_name='+cloudformation_stack_name+' '+\
+        '—require-approval never',cwd=path_to_infrastructure_folder)
+        os.chdir(current_dir)
 
     else:
         raise ValueError('The target deployment folder must at a minimum contain a subdirectory named "infrastructure" \
