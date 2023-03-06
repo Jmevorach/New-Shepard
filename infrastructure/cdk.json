@@ -2,8 +2,8 @@
 	"app": "python3 shepard.py",
 	"context": {
 		"account": "",
-      	"region": "",
-		"stack_name": "",
+      		"region": "",
+		"StackName": "",
 		"AllowJobsToAccessDockerDaemon": "False",
 		"BatchInstanceNames": "",
 		"CIDRToAllowSSHAccessTo": "",
