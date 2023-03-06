@@ -282,7 +282,7 @@ def check_for_environment_variables(account_number, role_to_assume_to_target_acc
 ######################################################HELPER LIBRARIES END HERE######################################################
 
 ######################################################DESTROY LIBRARIES START HERE######################################################
-def destroy(account_number,role_to_assume_to_target_account,path_to_deployment_folder,dont_assume,mfa_token,serial_number):
+def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack_name,path_to_deployment_folder,dont_assume,mfa_token,serial_number):
 
     #get default region from CLI
     region = check_output('aws configure get region', shell=True).strip().decode("utf-8")
@@ -320,8 +320,21 @@ def destroy(account_number,role_to_assume_to_target_account,path_to_deployment_f
         env_copy = os.environ.copy() # copy environment to append CDK environment variables
         env_copy['CDK_DEPLOY_ACCOUNT']=account_number
         env_copy['CDK_DEPLOY_REGION']=region
-        subprocess.run('cdk destroy --force',
-        capture_output=True, check=True, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
+        env_copy['CDK_STACK_NAME']=cloudformation_stack_name
+
+        try:
+            process = subprocess.Popen('cdk destroy --force',
+            stdout=subprocess.PIPE, cwd=path_to_infrastructure_folder, env=env_copy)
+            for line in iter(process.stdout.readline, ""):
+                sys.stdout.write(line)
+            if process.returncode != 0:
+                raise subprocess.CalledProcessError(process.returncode, process.args)
+        except subprocess.CalledProcessError as e:
+            print(traceback.format_exc())
+            output = e.output
+            logging.log(level=logging.ERROR, msg=str(output))
+            raise RuntimeError("command '{}' return with error (code {}): {}".format(e.cmd, e.returncode, output))
+
         os.chdir(current_dir)
     else:
         raise ValueError('The target deployment folder must at a minimum contain a subdirectory named "infrastructure" \

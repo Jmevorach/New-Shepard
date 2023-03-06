@@ -53,7 +53,7 @@ def run(command,account_number, use_env_variables, role_to_assume_to_target_acco
         print("\033[4m" + 'DESCRIPTION OF EACH COMMANDS ARGUMENTS STARTS HERE' + "\033[0m")
         print('auto_configure arguments: ' + "cloudformation_stack_name,account_number,role_to_assume_to_target_account,path_to_deployment_folder(optional)")
         print('deploy arguments: ' + "account_number,role_to_assume_to_target_account,cloudformation_stack_name,path_to_deployment_folder,ecr_repo_to_push_to")
-        print('destroy arguments: ' + "account_number,role_to_assume_to_target_account,path_to_deployment_folder")
+        print('destroy arguments: ' + "account_number,role_to_assume_to_target_account,cloudformation_stack_name,path_to_deployment_folder")
         print('batch arguments: ' + "account_number,role_to_assume_to_target_account,path_to_local_folder_to_batch,s3_bucket_to_upload_to")
         print('query arguments: ' + "account_number,role_to_assume_to_target_account,dynamo_db_to_query")
         print('describe arguments: ' + "account_number,role_to_assume_to_target_account,cloudformation_stack_name")
@@ -175,16 +175,16 @@ def run(command,account_number, use_env_variables, role_to_assume_to_target_acco
 
         deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_name,path_to_deployment_folder,ecr_repo_to_push_to,dont_assume,mfa_token,serial_number)
 
-    if command == 'deploy':
+    if command == 'destroy':
 
-        minimum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','path_to_deployment_folder']
-        maximum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','path_to_deployment_folder','dont_assume','mfa_token','serial_number']
+        minimum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','cloudformation_stack_name','path_to_deployment_folder']
+        maximum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','cloudformation_stack_name','path_to_deployment_folder','ecr_repo_to_push_to','dont_assume','mfa_token','serial_number']
         variables_exempt_from_parsing = ['use_env_variables']
 
         parse_inputs(command, minimum_variables_to_be_declared, maximum_variables_to_be_declared,
                      variables_exempt_from_parsing, initial_context, locals().copy())
 
-        destroy(account_number,role_to_assume_to_target_account,path_to_deployment_folder,dont_assume,mfa_token,serial_number)
+        destroy(account_number,role_to_assume_to_target_account,path_to_deployment_folder,cloudformation_stack_name,dont_assume,mfa_token,serial_number)
 
 
     if command == 'batch':
