@@ -326,7 +326,7 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
             process = subprocess.Popen('cdk destroy --force',
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
             for line in iter(process.stdout.readline, ""):
-                sys.stdout.write(line)
+                sys.stdout.buffer.write(line)
             if process.returncode != 0:
                 raise subprocess.CalledProcessError(process.returncode, process.args)
         except subprocess.CalledProcessError as e:
@@ -547,7 +547,7 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
             process = subprocess.Popen('cdk bootstrap',
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
             for line in iter(process.stdout.readline, ""):
-                sys.stdout.write(line)
+                sys.stdout.buffer.write(line)
             if process.returncode != 0:
                 raise subprocess.CalledProcessError(process.returncode, process.args)
         except subprocess.CalledProcessError as e:
@@ -561,7 +561,7 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
             process = subprocess.Popen('cdk synth',
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
             for line in iter(process.stdout.readline, ""):
-                sys.stdout.write(line)
+                sys.stdout.buffer.write(line)
             if process.returncode != 0:
                 raise subprocess.CalledProcessError(process.returncode, process.args)
         except subprocess.CalledProcessError as e:
@@ -575,7 +575,7 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
             process = subprocess.Popen('cdk deploy --require-approval never',
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
             for line in iter(process.stdout.readline, ""):
-                sys.stdout.write(line)
+                sys.stdout.buffer.write(line)
             if process.returncode != 0:
                 raise subprocess.CalledProcessError(process.returncode, process.args)
         except subprocess.CalledProcessError as e:

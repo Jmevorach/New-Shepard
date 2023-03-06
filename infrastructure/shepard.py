@@ -54,7 +54,7 @@ class ShepardStack(Stack):
                     ),
                     # 3 x Private Subnets (1 per AZ) with 256 IPs each for our Shepard workers (by default it's a /24).
                     ec2.SubnetConfiguration(
-                        subnet_type=ec2.SubnetType.PRIVATE_WITH_NAT,
+                        subnet_type=ec2.SubnetType.PRIVATE_WITH_EGRESS,
                         name="Private",
                         cidr_mask=self.node.try_get_context("VPCCidrMaskPrivate")
                     )
@@ -1692,11 +1692,8 @@ class ShepardStack(Stack):
 #instantiate App() object
 app = App()
 
-#Attempt to get stack name from context and if not there use user supplied value
-if app.node.try_get_context("StackName"):
-    stack_name = app.node.try_get_context("StackName")
-else:
-    stack_name = os.getenv('CDK_STACK_NAME',None)
+#get our user specified stack name
+stack_name = os.getenv('CDK_STACK_NAME')
 
 #define shepard stack
 shepard_stack = ShepardStack(app, stack_name)
