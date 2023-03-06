@@ -327,6 +327,8 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
             for line in iter(process.stdout.readline, ""):
                 sys.stdout.buffer.write(line)
+            process.stdout.close()
+            process.wait()
             if process.returncode != 0:
                 raise subprocess.CalledProcessError(process.returncode, process.args)
         except subprocess.CalledProcessError as e:
@@ -548,6 +550,8 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
             for line in iter(process.stdout.readline, ""):
                 sys.stdout.buffer.write(line)
+            process.stdout.close()
+            process.wait()
             if process.returncode != 0:
                 raise subprocess.CalledProcessError(process.returncode, process.args)
         except subprocess.CalledProcessError as e:
@@ -562,6 +566,8 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
             for line in iter(process.stdout.readline, ""):
                 sys.stdout.buffer.write(line)
+            process.stdout.close()
+            process.wait()
             if process.returncode != 0:
                 raise subprocess.CalledProcessError(process.returncode, process.args)
         except subprocess.CalledProcessError as e:
@@ -576,6 +582,8 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
             for line in iter(process.stdout.readline, ""):
                 sys.stdout.buffer.write(line)
+            process.stdout.close()
+            process.wait()
             if process.returncode != 0:
                 raise subprocess.CalledProcessError(process.returncode, process.args)
         except subprocess.CalledProcessError as e:
