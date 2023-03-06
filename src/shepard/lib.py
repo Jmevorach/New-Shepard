@@ -324,10 +324,9 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
 
         try:
             process = subprocess.Popen('cdk destroy --force',
-            stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-            while process.poll() is None:
-                line = process.stdout.readline()
-                sys.stdout.buffer.write(line)
+            stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy, bufsize=1)
+            for line in iter(process.stdout.readline, b''):
+                print(line),
             process.stdout.close()
             process.wait()
             if process.returncode != 0:
@@ -548,10 +547,9 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         #bootstrap our environment if needed
         try:
             process = subprocess.Popen('cdk bootstrap',
-            stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-            while process.poll() is None:
-                line = process.stdout.readline()
-                sys.stdout.buffer.write(line)
+            stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy, bufsize=1)
+            for line in iter(process.stdout.readline, b''):
+                print(line),
             process.stdout.close()
             process.wait()
             if process.returncode != 0:
@@ -565,10 +563,9 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         #Run CDK synth
         try:
             process = subprocess.Popen('cdk synth',
-            stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-            while process.poll() is None:
-                line = process.stdout.readline()
-                sys.stdout.buffer.write(line)
+            stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy, bufsize=1)
+            for line in iter(process.stdout.readline, b''):
+                print(line),
             process.stdout.close()
             process.wait()
             if process.returncode != 0:
@@ -582,10 +579,9 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         #Run CDK deploy
         try:
             process = subprocess.Popen('cdk deploy --require-approval never',
-            stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-            while process.poll() is None:
-                line = process.stdout.readline()
-                sys.stdout.buffer.write(line)
+            stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy, bufsize=1)
+            for line in iter(process.stdout.readline, b''):
+                print(line),
             process.stdout.close()
             process.wait()
             if process.returncode != 0:
