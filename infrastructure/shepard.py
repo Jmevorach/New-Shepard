@@ -97,12 +97,12 @@ class ShepardStack(Stack):
 
         #################################SECRETS MANAGER SETUP STARTS HERE#################################
         if self.node.try_get_context("SecretsManagerName"):
-            secret_store = secretsmanager.Secret(
+            secret_store = secretsmanager.Secret(self,
                 "ShepardSecretManagerStore",
                 secret_name=self.node.try_get_context("SecretsManagerName"),
             )
         else:
-            secret_store = secretsmanager.Secret(
+            secret_store = secretsmanager.Secret(self,
                 "ShepardSecretManagerStore"
             )
 
@@ -116,7 +116,7 @@ class ShepardStack(Stack):
         #create EFS system if requested
         if self.node.try_get_context("CreateEFS") == 'True':
             #Create EFS security group
-            efs_security_group = ec2.SecurityGroup(
+            efs_security_group = ec2.SecurityGroup(self,
                 "EFSMountTargetSecurityGroup",
                 vpc=shepard_vpc,
                 allow_all_outbound=True,
@@ -189,7 +189,7 @@ class ShepardStack(Stack):
         #create Lustre file system if requested
         if self.node.try_get_context("CreateLustre") == 'True':
             #Create EFS security group
-            lustre_security_group = ec2.SecurityGroup(
+            lustre_security_group = ec2.SecurityGroup(self,
                 "LustreSecurityGroup",
                 vpc=shepard_vpc,
                 allow_all_outbound=True,

@@ -325,7 +325,8 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
         try:
             process = subprocess.Popen('cdk destroy --force',
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-            for line in iter(process.stdout.readline, ""):
+            while process.poll() is None:
+                line = process.stdout.readline()
                 sys.stdout.buffer.write(line)
             process.stdout.close()
             process.wait()
@@ -548,7 +549,8 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         try:
             process = subprocess.Popen('cdk bootstrap',
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-            for line in iter(process.stdout.readline, ""):
+            while process.poll() is None:
+                line = process.stdout.readline()
                 sys.stdout.buffer.write(line)
             process.stdout.close()
             process.wait()
@@ -564,7 +566,8 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         try:
             process = subprocess.Popen('cdk synth',
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-            for line in iter(process.stdout.readline, ""):
+            while process.poll() is None:
+                line = process.stdout.readline()
                 sys.stdout.buffer.write(line)
             process.stdout.close()
             process.wait()
@@ -580,7 +583,8 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         try:
             process = subprocess.Popen('cdk deploy --require-approval never',
             stdout=subprocess.PIPE, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
-            for line in iter(process.stdout.readline, ""):
+            while process.poll() is None:
+                line = process.stdout.readline()
                 sys.stdout.buffer.write(line)
             process.stdout.close()
             process.wait()
