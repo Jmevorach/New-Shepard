@@ -1693,7 +1693,7 @@ class ShepardStack(Stack):
 app = App()
 
 #get our user specified stack name
-stack_name = os.getenv('CDK_STACK_NAME')
+stack_name = os.environ['CDK_STACK_NAME']
 
 #define shepard stack
 shepard_stack = ShepardStack(app, stack_name)
