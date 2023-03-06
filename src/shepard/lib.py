@@ -314,10 +314,14 @@ def destroy(account_number,role_to_assume_to_target_account,path_to_deployment_f
 
         path_to_infrastructure_folder = os.path.join(path_to_deployment_folder,'infrastructure')
 
-        # instantiate infrastructure
-        subprocess.check_output('cdk destroy --force',shell=True,cwd=path_to_infrastructure_folder)
+        # tear down infrastructure
+        current_dir = os.getcwd()
+        env_copy = os.environ.copy() # copy environment to append CDK environment variables
+        env_copy['CDK_DEPLOY_ACCOUNT']=account_number
+        env_copy['CDK_DEPLOY_REGION']=region
+        subprocess.run('cdk destroy --force',
+        capture_output=True, check=True, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
         os.chdir(current_dir)
-
     else:
         raise ValueError('The target deployment folder must at a minimum contain a subdirectory named "infrastructure" \
                           that contains the code necessary to build your flock. For an example of this folder see here:\
@@ -518,11 +522,17 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         path_to_infrastructure_folder = os.path.join(path_to_deployment_folder,'infrastructure')
 
         # instantiate infrastructure
+        current_dir = os.getcwd()
         env_copy = os.environ.copy() # copy environment to append CDK environment variables
         env_copy['CDK_DEPLOY_ACCOUNT']=account_number
         env_copy['CDK_DEPLOY_REGION']=region
-        subprocess.check_output('cdk bootstrap && cdk synth && cdk deploy --context StackName='+cloudformation_stack_name+' '+\
-        '—require-approval never',shell=True,cwd=path_to_infrastructure_folder, env=env_copy)
+        env_copy['CDK_STACK_NAME']=cloudformation_stack_name
+        subprocess.run('cdk bootstrap',
+        capture_output=True, check=True, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
+        subprocess.run('cdk synth',
+        capture_output=True, check=True, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
+        subprocess.run('cdk deploy --require-approval never',
+        capture_output=True, check=True, shell=True, cwd=path_to_infrastructure_folder, env=env_copy)
         os.chdir(current_dir)
 
     else:

@@ -1692,14 +1692,14 @@ class ShepardStack(Stack):
 #instantiate App() object
 app = App()
 
-#Attempt to get stack name from context and if not there throw error
+#Attempt to get stack name from context and if not there use user supplied value
 if app.node.try_get_context("StackName"):
     stack_name = app.node.try_get_context("StackName")
 else:
-    raise ValueError('Your specified CloudFormation stack name must be a string that is not a null string or "".')
+    stack_name = os.getenv('CDK_STACK_NAME',None)
 
 #define shepard stack
-shepard_stack = ShepardStack(app, stack_name=stack_name, env=Environment(account=account, region=region))
+shepard_stack = ShepardStack(app, stack_name=stack_name)
 
 #attach tags if requested to new infrastructure
 if app.node.try_get_context("ResourceTags"):
