@@ -76,14 +76,14 @@ class ShepardStack(Stack):
         #################################ECR REPO SETUP STARTS HERE#################################
         #create ECR repo
         if self.node.try_get_context("ECRRepoName"):
-            ecr_repo = ecr.Repository(
+            ecr_repo = ecr.Repository(self,
                 "ShepardECRRepo",
                 encryption=ecr.RepositoryEncryption.KMS,
                 repository_name=self.node.try_get_context("ECRRepoName"),
                 removal_policy=RemovalPolicy.DESTROY
             )
         else:
-            ecr_repo = ecr.Repository(
+            ecr_repo = ecr.Repository(self,
                 "ShepardECRRepo",
                 encryption=ecr.RepositoryEncryption.KMS,
                 removal_policy=RemovalPolicy.DESTROY
