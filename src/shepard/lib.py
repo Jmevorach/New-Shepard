@@ -520,7 +520,7 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         # instantiate infrastructure
         subprocess.check_output('cdk bootstrap && cdk deploy -c account='+account_number+' '+\
         '-c region='+region+' '+\
-        '-c stack_name='+cloudformation_stack_name+' '+\
+        '-c StackName='+cloudformation_stack_name+' '+\
         '—require-approval never',shell=True,cwd=path_to_infrastructure_folder)
         os.chdir(current_dir)
 

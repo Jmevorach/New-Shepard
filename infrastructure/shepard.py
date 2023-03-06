@@ -1432,7 +1432,7 @@ class ShepardStack(Stack):
 
         #################################CFN OUTPUT/EXPORT SETUP STARTS HERE#################################
         #get stack name from supplied context
-        stack_name = self.node.try_get_context("stack_name")
+        stack_name = self.node.try_get_context("StackName")
 
         #export VPC ID
         if self.node.try_get_context("ExistingVPC"):
@@ -1705,8 +1705,8 @@ else:
     region = os.environ.get("CDK_DEPLOY_REGION",os.environ["CDK_DEFAULT_REGION"])
 
 #Attempt to get stack name from context and if not there throw error
-if app.node.try_get_context("stack_name").strip() != "":
-    stack_name = app.node.try_get_context("stack_name")
+if app.node.try_get_context("StackName").strip() != "":
+    stack_name = app.node.try_get_context("StackName")
 else:
     raise ValueError('Your specified CloudFormation stack name must be a string that is not a null string or "".')
 
