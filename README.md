@@ -372,7 +372,7 @@ Infrastructure configuration options for your flock can be set in the cdk.json f
 Here's a description of each of the options you can set:
 
 ##### ** General Stack Parameters**
-  * <ins>stack_name</ins> - Name of the cloudformation stack that will be used to create your flock.
+  * <ins>StackName</ins> - Name for the cloudformation stack for this flock.
   * <ins>ResourceTags</ins> - Tags that will be applied to all infrastructure created for your flock.
 
 ##### **Job Execution Parameters**

@@ -1,6 +1,7 @@
 {
 	"app": "python3 shepard.py",
 	"context": {
+		"StackName":"",
 		"AllowJobsToAccessDockerDaemon": "False",
 		"BatchInstanceNames": "",
 		"CIDRToAllowSSHAccessTo": "",

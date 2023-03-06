@@ -1692,18 +1692,6 @@ class ShepardStack(Stack):
 #instantiate App() object
 app = App()
 
-#Attempt to get account id from CDK environment variable or from hardcoded variable in cdk.json
-if app.node.try_get_context("account"):
-    account = app.node.try_get_context("account")
-else:
-    account = os.environ.get("CDK_DEPLOY_ACCOUNT",os.environ["CDK_DEFAULT_ACCOUNT"])
-
-#Attempt to get region from CDK environment variable or from hardcoded variable in cdk.json
-if app.node.try_get_context("region"):
-    region = app.node.try_get_context("region")
-else:
-    region = os.environ.get("CDK_DEPLOY_REGION",os.environ["CDK_DEFAULT_REGION"])
-
 #Attempt to get stack name from context and if not there throw error
 if app.node.try_get_context("StackName"):
     stack_name = app.node.try_get_context("StackName")
@@ -1711,7 +1699,7 @@ else:
     raise ValueError('Your specified CloudFormation stack name must be a string that is not a null string or "".')
 
 #define shepard stack
-shepard_stack = ShepardStack(app, stack_name, env=Environment(account=account, region=region))
+shepard_stack = ShepardStack(app, stack_name=stack_name, env=Environment(account=account, region=region))
 
 #attach tags if requested to new infrastructure
 if app.node.try_get_context("ResourceTags"):

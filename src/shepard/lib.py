@@ -518,10 +518,11 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         path_to_infrastructure_folder = os.path.join(path_to_deployment_folder,'infrastructure')
 
         # instantiate infrastructure
-        subprocess.check_output('cdk bootstrap && cdk deploy --context account='+account_number+' '+\
-        '--context region='+region+' '+\
-        '--context StackName='+cloudformation_stack_name+' '+\
-        '—require-approval never',shell=True,cwd=path_to_infrastructure_folder)
+        env_copy = os.environ.copy() # copy environment to append CDK environment variables
+        env_copy['CDK_DEPLOY_ACCOUNT']=account_number
+        env_copy['CDK_DEPLOY_REGION']=region
+        subprocess.check_output('cdk bootstrap && cdk synth && cdk deploy --context StackName='+cloudformation_stack_name+' '+\
+        '—require-approval never',shell=True,cwd=path_to_infrastructure_folder, env=env_copy)
         os.chdir(current_dir)
 
     else:
