@@ -155,7 +155,9 @@ def run(command,account_number, use_env_variables, role_to_assume_to_target_acco
 
     if dont_assume == 'True':
         role_to_assume_to_target_account = str(uuid.uuid4())  # make the argument a random string if you're not assuming so we don't trigger the non initialization check if no default is set.
-        account_number = str(uuid.uuid4())  # make the argument a random string if you're not assuming so we don't trigger the non initialization check if no default is set.
+
+        if account_number == None:
+            account_number = str(boto3.client('sts').get_caller_identity().get('Account'))  # get account number if not set by user already.
 
     if use_env_variables == 'True':
         if command not in ['clear_profile_config', 'check_profile','check_role','check_update', 'release_role', 'where_am_i']:

@@ -315,7 +315,7 @@ def destroy(account_number,role_to_assume_to_target_account,path_to_deployment_f
         path_to_infrastructure_folder = os.path.join(path_to_deployment_folder,'infrastructure')
 
         # instantiate infrastructure
-        subprocess.check_output('cdk destroy --force',cwd=path_to_infrastructure_folder)
+        subprocess.check_output('cdk destroy --force',shell=True,cwd=path_to_infrastructure_folder)
         os.chdir(current_dir)
 
     else:
@@ -472,6 +472,9 @@ def push_to_ecr(account_number,role_to_assume_to_target_account,ecr_repo_to_push
     return 0
 
 def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_name,path_to_deployment_folder,ecr_repo_to_push_to,dont_assume,mfa_token,serial_number):
+    #get default account number from CLI
+    region = check_output('aws configure get region', shell=True).strip().decode("utf-8")
+
     #get default region from CLI
     region = check_output('aws configure get region', shell=True).strip().decode("utf-8")
 
@@ -518,7 +521,7 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
         subprocess.check_output('cdk bootstrap && cdk deploy -c account='+account_number+' '+\
         '-c region='+region+' '+\
         '-c stack_name='+cloudformation_stack_name+' '+\
-        '—require-approval never',cwd=path_to_infrastructure_folder)
+        '—require-approval never',shell=True,cwd=path_to_infrastructure_folder)
         os.chdir(current_dir)
 
     else:
