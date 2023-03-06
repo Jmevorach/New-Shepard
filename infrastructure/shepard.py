@@ -1699,7 +1699,7 @@ else:
     stack_name = os.getenv('CDK_STACK_NAME',None)
 
 #define shepard stack
-shepard_stack = ShepardStack(app, stack_name=stack_name)
+shepard_stack = ShepardStack(app, stack_name)
 
 #attach tags if requested to new infrastructure
 if app.node.try_get_context("ResourceTags"):
