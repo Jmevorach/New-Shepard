@@ -9,11 +9,11 @@
 		"CreateLustre": "False",
 		"CreateNewVPC": "True",
 		"DaysToKeepFailedLaunchIndexes": 30,
-		"DesiredCPU": 64,
+		"DesiredCPU": 2,
 		"DefaultEC2Tags": {
 			"TagToAttachToInstances": "ValueOfTagToAttachToInstances"
 		},
-		"DesiredRam": "500000",
+		"DesiredRam": "10000",
 		"ECRRepoName": "",
 		"EFSName": "",
 		"EFSThroughput": "",
@@ -27,7 +27,7 @@
 		"ExistingSubnetID2": "",
 		"ExistingSubnetID3": "",
 		"InputsBucket": "",
-		"InstanceTypes": "r5.16xlarge, r5a.16xlarge, r5ad.16xlarge, r5d.16xlarge, r5dn.16xlarge, r5n.16xlarge",
+		"InstanceTypes": "r5.large, r5b.large, r5n.large, r5a.large",
 		"JobDefinitionName": "",
 		"LambdaMemorySize": 128,
 		"LaunchTemplateName": "",
