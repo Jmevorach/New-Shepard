@@ -79,11 +79,15 @@ def reconstitute_auths():
 			raise e
 	else:
 		# change the JSON string into a JSON object
-		jsonObject = json.loads(get_secret_value_response['SecretString'])
-		for key in jsonObject:
-			file = open(key, "wb+")  # append mode
-			file.write(base64.b64decode(jsonObject[key].encode('utf8')))
-			file.close()
+		try:
+			jsonObject = json.loads(get_secret_value_response['SecretString'])
+			for key in jsonObject:
+				file = open(key, "wb+")  # append mode
+				file.write(base64.b64decode(jsonObject[key].encode('utf8')))
+				file.close()
+		except:
+			#if there's no auths to reconstitute we can avoid throwing an error this way
+			pass
 	return
 
 def upload_to_s3(file_name, bucket, object_name=None):
