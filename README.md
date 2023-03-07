@@ -107,7 +107,7 @@ You must have the following tools installed and set up to use Shepard.
 ### Hello World Example
 ```
 #install shepard
-pip install shepard
+pip3 install shepard
 
 #deploy our testing infrastructure and code
 shepard deploy --cloudformation_stack_name testing --path_to_deployment_folder testing-setup
