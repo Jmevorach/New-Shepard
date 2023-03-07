@@ -94,15 +94,15 @@ The project is named after Alan Shepard who was the first American to travel int
 
 ### Requirements
 You must have the following tools installed and set up to use Shepard.
-  * <ins>[Docker](https://docs.docker.com/engine/)</ins> 
-  * <ins>[Python](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python)</ins> 
-  * <ins>[Git](https://github.com/git-guides/install-git)</ins>
-  * <ins>[AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#getting-started-install-instructions)</ins>
-  * <ins>[AWS CDK](https://AWS.amazon.com/cdk/)</ins>
+  * [Docker](https://docs.docker.com/engine/) 
+  * [Python](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python) 
+  * [Git](https://github.com/git-guides/install-git)
+  * [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html#getting-started-install-instructions)
+  * [AWS CDK](https://AWS.amazon.com/cdk/)
     * Steps:
-      1. <ins>[Install Node Version Manager](https://github.com/nvm-sh/nvm#install--update-script)</ins>
-      2. <ins>[Use Node Version Manager to Install Node](https://github.com/nvm-sh/nvm#usage)</ins>
-      3. <ins>[Use NPM to Install AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install)
+      1. [Install Node Version Manager](https://github.com/nvm-sh/nvm#install--update-script)
+      2. [Use Node Version Manager to Install Node](https://github.com/nvm-sh/nvm#usage)
+      3. [Use NPM to Install AWS CDK](https://docs.aws.amazon.com/cdk/v2/guide/getting_started.html#getting_started_install)
 
 ### Hello World Example
 ```
@@ -389,93 +389,93 @@ Infrastructure configuration options for your flock can be set in the cdk.json f
 Here's a description of each of the options you can set:
 
 ##### ** General Stack Parameters**
-  * <ins>ResourceTags</ins> - Tags that will be applied to all infrastructure created for your flock.
+  * ResourceTags - Tags that will be applied to all infrastructure created for your flock.
 
 ##### **Job Execution Parameters**
-  * <ins>AllowJobsToAccessDockerDaemon</ins> - Setting this to "True" will cause containerized workloads to be run in the ["privileged"](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities)) mode and have access to the Docker daemon from the host sheep. Setting this to true allows for jobs to perform docker actions such as pulling another container from a private or public registry, loading a container from a tar file created by a `docker save` command (especially useful for certain workflows), and more
+  * AllowJobsToAccessDockerDaemon - Setting this to "True" will cause containerized workloads to be run in the ["privileged"](https://docs.docker.com/engine/reference/run/#runtime-privilege-and-linux-capabilities)) mode and have access to the Docker daemon from the host sheep. Setting this to true allows for jobs to perform docker actions such as pulling another container from a private or public registry, loading a container from a tar file created by a `docker save` command (especially useful for certain workflows), and more
 
 ##### **S3 Parameters**
-  * <ins>InputsBucket</ins> - This is the name of the S3 bucket with which you can trigger Shepard jobs by dropping properly formatted S3 zip files to. We will get into what constitutes a properly formatted zip file later on in the documentation but for brevity we will describe it here as a zip that, at a minimum, contains a text file named "inputs.txt" that contains json describing what you'd like to become environment variables for that specific job. This also corresponds to the "shepard_cli_s3_bucket_to_upload_to" attribute when you run the "configure" command using the Shepard CLI.
-  * <ins>OutputsBucket</ins> - This is the name of the S3 bucket that will store outputs from jobs from the architecture written to the output locations. This also corresponds to the "shepard_cli_s3_bucket_for_results" attribute when you run the "configure" command using the Shepard CLI.
-  * <ins>ErrorsBucket</ins> - This is the name of the S3 bucket to which jobs will deposit zip files containing log files in the event a container being run throws a fatal error.
-  * <ins>QuickDeployBucket</ins> - This is the name of the S3 bucket to be used for the "Quick Deploy" capability for this flock. For more information on how to use the "Quick Deploy" feature in Shepard please see the "Using the Quick-Deploy Feature" section of this documentation.
+  * InputsBucket - This is the name of the S3 bucket with which you can trigger Shepard jobs by dropping properly formatted S3 zip files to. We will get into what constitutes a properly formatted zip file later on in the documentation but for brevity we will describe it here as a zip that, at a minimum, contains a text file named "inputs.txt" that contains json describing what you'd like to become environment variables for that specific job. This also corresponds to the "shepard_cli_s3_bucket_to_upload_to" attribute when you run the "configure" command using the Shepard CLI.
+  * OutputsBucket - This is the name of the S3 bucket that will store outputs from jobs from the architecture written to the output locations. This also corresponds to the "shepard_cli_s3_bucket_for_results" attribute when you run the "configure" command using the Shepard CLI.
+  * ErrorsBucket - This is the name of the S3 bucket to which jobs will deposit zip files containing log files in the event a container being run throws a fatal error.
+  * QuickDeployBucket - This is the name of the S3 bucket to be used for the "Quick Deploy" capability for this flock. For more information on how to use the "Quick Deploy" feature in Shepard please see the "Using the Quick-Deploy Feature" section of this documentation.
 
 ##### **DynamoDB Parameters**
-  * <ins>TableName</ins> - The name of the DynamoDB that will get made for use with the flock for storing attributes (including real-time auto-updating attributes) for jobs. This also corresponds to the "shepard_cli_dynamo_db_to_query" attribute when you run the "configure" command using the Shepard CLI.
+  * TableName - The name of the DynamoDB that will get made for use with the flock for storing attributes (including real-time auto-updating attributes) for jobs. This also corresponds to the "shepard_cli_dynamo_db_to_query" attribute when you run the "configure" command using the Shepard CLI.
 
 ##### **Secrets Manager Parameters**
-  * <ins>SecretsManagerName</ins> - The name of the secrets manager secrets instance that will get made for use along with the rest of the architecture. Secrets stored here as key value pairs where the key is the name of a file and the value is a base64 string representation of a file will be securely reconstituted for use at runtime by containers running your jobs. You can populate this with files in a directory using the Shepard CLI "secretify" command. This also corresponds to the "shepard_cli_secret_store" attribute when you run the "configure" command using the Shepard CLI.
+  * SecretsManagerName - The name of the secrets manager secrets instance that will get made for use along with the rest of the architecture. Secrets stored here as key value pairs where the key is the name of a file and the value is a base64 string representation of a file will be securely reconstituted for use at runtime by containers running your jobs. You can populate this with files in a directory using the Shepard CLI "secretify" command. This also corresponds to the "shepard_cli_secret_store" attribute when you run the "configure" command using the Shepard CLI.
 
 ##### **Batch Parameters**
-  * <ins>BatchInstanceNames</ins> - This is the name that will be given to batch instances running as part of the flock.
-  * <ins>DesiredRam</ins> - This is the amount of RAM you'd like each of your jobs running in AWS Batch to use in CPU cores.
-  * <ins>DesiredCPU</ins> - This is the amount of CPU you'd like each of your jobs running in AWS Batch to use in MiB.
-  * <ins>MaxCPU</ins> - This is the maximum amount of CPU cores you'd ever want to be allowed to run in the batch environment at one time. By default this is set very high but if you'd like to limit throughput lowering it might not be a bad idea.
-  * <ins>InstanceTypes</ins> - The instance types you'd like to run your jobs as a comma delimited list.
-  * <ins>LaunchTemplateName</ins> - The name you'd like to give to the launch template associated with this flock.
-  * <ins>ComputeEnvironmentName</ins> - Name given to the AWS Batch compute environment associated with this flock.
-  * <ins>ComputeEnvironmentType</ins> - You get to choose from a dropdown between "Ec2" and "Spot". Selecting "Spot" will cause the instances running your jobs to be AWS "Spot" instances which can result in potential cost savings while "Ec2" will cause the instances running your jobs to be normal on-demand instances which are generally (but not always) more expensive than "Spot" instances.
-  * <ins>QueueName</ins> - The name given to the AWS Batch job queue associated with this flock.
-  * <ins>JobDefinitionName</ins> - The name given to the AWS Batch job definition associated wit this flock.
-  * <ins>Ec2KeyPair</ins> - An SSH key that exists that can be specified to SSH into sheep running on the flock. If this isn't specified you won't be able to SSH into sheep running in a flock. Can be useful for debugging purposes to have SSH access to your sheep.
-  * <ins>UlimitsNoFilesOpen</ins> - Changing this number allows you to modify the amount of files that can be opened by all the containers running on an instance at one time simultaneously. Right now it's set to the maximum I found I could make it of 1048576 (1024^2) but you should be able to lower it if you desire. That said making it higher this number will generally cause errors.
-  * <ins>SpotBidPricePercent</ins> - If set the compute environment type will be set to "SPOT" and this number will be used as the spot bid price percentage bid for sheep running on your flock. 
+  * BatchInstanceNames - This is the name that will be given to batch instances running as part of the flock.
+  * DesiredRam - This is the amount of RAM you'd like each of your jobs running in AWS Batch to use in CPU cores.
+  * DesiredCPU - This is the amount of CPU you'd like each of your jobs running in AWS Batch to use in MiB.
+  * MaxCPU - This is the maximum amount of CPU cores you'd ever want to be allowed to run in the batch environment at one time. By default this is set very high but if you'd like to limit throughput lowering it might not be a bad idea.
+  * InstanceTypes - The instance types you'd like to run your jobs as a comma delimited list.
+  * LaunchTemplateName - The name you'd like to give to the launch template associated with this flock.
+  * ComputeEnvironmentName - Name given to the AWS Batch compute environment associated with this flock.
+  * ComputeEnvironmentType - You get to choose from a dropdown between "Ec2" and "Spot". Selecting "Spot" will cause the instances running your jobs to be AWS "Spot" instances which can result in potential cost savings while "Ec2" will cause the instances running your jobs to be normal on-demand instances which are generally (but not always) more expensive than "Spot" instances.
+  * QueueName - The name given to the AWS Batch job queue associated with this flock.
+  * JobDefinitionName - The name given to the AWS Batch job definition associated wit this flock.
+  * Ec2KeyPair - An SSH key that exists that can be specified to SSH into sheep running on the flock. If this isn't specified you won't be able to SSH into sheep running in a flock. Can be useful for debugging purposes to have SSH access to your sheep.
+  * UlimitsNoFilesOpen - Changing this number allows you to modify the amount of files that can be opened by all the containers running on an instance at one time simultaneously. Right now it's set to the maximum I found I could make it of 1048576 (1024^2) but you should be able to lower it if you desire. That said making it higher this number will generally cause errors.
+  * SpotBidPricePercent - If set the compute environment type will be set to "SPOT" and this number will be used as the spot bid price percentage bid for sheep running on your flock. 
 
 ##### **Instance Tagging Parameters**
-  * <ins>ProjectName</ins> - This value will be set as a value for a "Project" tag that will be affixed to all instances running in this flock.
-  * <ins>TeamName</ins> - This value will be set as a value for a "Team" tag that will be affixed to all instances running in this flock.
-  * <ins>ContactEmail</ins> - This value will be set as a value for a "Contact" tag that will be affixed to all instances running in this flock.
-  * <ins>WorkloadValue</ins>  - This value will be set as a value for a "WorkloadType" tag that will be affixed to all instances running in this flock.
+  * ProjectName - This value will be set as a value for a "Project" tag that will be affixed to all instances running in this flock.
+  * TeamName - This value will be set as a value for a "Team" tag that will be affixed to all instances running in this flock.
+  * ContactEmail - This value will be set as a value for a "Contact" tag that will be affixed to all instances running in this flock.
+  * WorkloadValue  - This value will be set as a value for a "WorkloadType" tag that will be affixed to all instances running in this flock.
 
 ##### **ECR Parameters**
-  * <ins>ECRRepoName</ins> - The name given to the ECR repo associated with this flock. To deploy new code you push a new container. A Shepard compatible container can be pushed to ECR in one command using the "deploy" command in the Shepard CLI. This corresponds to the 'shepard_cli_ecr_repo_to_push_to' attribute when you run the "configure" command using the Shepard CLI. This also corresponds to the "shepard_ecr_repo_to_push_to" attribute when you run the "configure" command using the Shepard CLI.
+  * ECRRepoName - The name given to the ECR repo associated with this flock. To deploy new code you push a new container. A Shepard compatible container can be pushed to ECR in one command using the "deploy" command in the Shepard CLI. This corresponds to the 'shepard_cli_ecr_repo_to_push_to' attribute when you run the "configure" command using the Shepard CLI. This also corresponds to the "shepard_ecr_repo_to_push_to" attribute when you run the "configure" command using the Shepard CLI.
 
 ##### **File System Parameters**
 
 ###### **EFS Parameters**
-  * <ins>CreateEFS</ins> - If you set this to "True" an EFS file system will be spun up for use with your flock. If you set this to "False" an EFS file system will not be created for use with your flock.
-  * <ins>EFSName</ins> - The name given to an EFS filesystem associated with this flock should you decide to request one for use with the flock.
-  * <ins>EFSThroughput</ins> - The throughput of an EFS filesystem associated with this flock should you decide to request one for use with the flock.
+  * CreateEFS - If you set this to "True" an EFS file system will be spun up for use with your flock. If you set this to "False" an EFS file system will not be created for use with your flock.
+  * EFSName - The name given to an EFS filesystem associated with this flock should you decide to request one for use with the flock.
+  * EFSThroughput - The throughput of an EFS filesystem associated with this flock should you decide to request one for use with the flock.
 
 ###### **Lustre Parameters**
-  * <ins>CreateLustre</ins> - If you set this to "True" a Lustre file system will be spun up for use with your flock. If you set this to "False" a Lustre file system will not be created for use with your flock.
-  * <ins>LustreName</ins> - The name given to a Lustre filesystem associated with this flock should you decide to request one for use with the flock.
-  * <ins>LustreBucketName</ins>  - The name given to an S3 bucket associated with a Lustre filesystem should you decide to request a Lustre filesystem for use with the flock. To be clear this will be the name of an S3 bucket that will be created if you choose to request a Lustre filesystem for the flock unless you specify that you'd like to use a preexisting bucket.
-  * <ins>LustreStorageCapacity</ins> - A number in GiB you'd like for storage on your Lustre file system. Must be an integer. Valid values are 1.2 TiB, 2.4 TiB, and increments of 2.4 TiB.
-  * <ins>ExistingLustreBucket</ins>  - If set allows for the usage of an existing S3 bucket with your Lustre file system. Can be useful for quickly populating a Lustre file system with data from an S3 bucket as when the Lustre file system is first created it will attempt to import data from the S3 bucket associated with it.
+  * CreateLustre - If you set this to "True" a Lustre file system will be spun up for use with your flock. If you set this to "False" a Lustre file system will not be created for use with your flock.
+  * LustreName - The name given to a Lustre filesystem associated with this flock should you decide to request one for use with the flock.
+  * LustreBucketName  - The name given to an S3 bucket associated with a Lustre filesystem should you decide to request a Lustre filesystem for use with the flock. To be clear this will be the name of an S3 bucket that will be created if you choose to request a Lustre filesystem for the flock unless you specify that you'd like to use a preexisting bucket.
+  * LustreStorageCapacity - A number in GiB you'd like for storage on your Lustre file system. Must be an integer. Valid values are 1.2 TiB, 2.4 TiB, and increments of 2.4 TiB.
+  * ExistingLustreBucket  - If set allows for the usage of an existing S3 bucket with your Lustre file system. Can be useful for quickly populating a Lustre file system with data from an S3 bucket as when the Lustre file system is first created it will attempt to import data from the S3 bucket associated with it.
 
 ##### **EBS Volume Parameters**
-  * <ins>SizeOfRootDisk</ins> - An integer specifying the number of GiB you'd like for the encrypted EBS volume that will be used to backend the root disk for the EC2 instances that will run your batch jobs. By default AWS Batch makes this 22 GiB but you can make it arbitrarily large (while not exceeding the limits for EBS volumes in launch templates general). If you choose to be able to toggle the default EBS volume sizes for Batch instances to this size by setting "ToggleVariableEBSVolumeSizes" to "True" in the Cloudforamtion this number must be at least 22 GiB. 
-  * <ins>SizeOfContainerStorageDisk</ins> - An integer specifying the number of GiB you'd like for the encrypted EBS volume that will be used to backend the storage of containers for the EC2 instances that will run your batch jobs. By default AWS Batch makes this 8 GiB but you can make it arbitrarily large (while not exceeding the limits for EBS volumes in launch templates general). If you choose to be able to toggle the default EBS volume sizes for Batch instances to this size by setting "ToggleVariableEBSVolumeSizes" to "True" in the Cloudforamtion this number must be at least 22 GiB. 
+  * SizeOfRootDisk - An integer specifying the number of GiB you'd like for the encrypted EBS volume that will be used to backend the root disk for the EC2 instances that will run your batch jobs. By default AWS Batch makes this 22 GiB but you can make it arbitrarily large (while not exceeding the limits for EBS volumes in launch templates general). If you choose to be able to toggle the default EBS volume sizes for Batch instances to this size by setting "ToggleVariableEBSVolumeSizes" to "True" in the Cloudforamtion this number must be at least 22 GiB. 
+  * SizeOfContainerStorageDisk - An integer specifying the number of GiB you'd like for the encrypted EBS volume that will be used to backend the storage of containers for the EC2 instances that will run your batch jobs. By default AWS Batch makes this 8 GiB but you can make it arbitrarily large (while not exceeding the limits for EBS volumes in launch templates general). If you choose to be able to toggle the default EBS volume sizes for Batch instances to this size by setting "ToggleVariableEBSVolumeSizes" to "True" in the Cloudforamtion this number must be at least 22 GiB. 
 
 ##### **SQS Parameters**
-  * <ins>SQSName</ins> - The name of the SQS queue that will hold events resulting from S3 uploads to the Shepard trigger bucket.
+  * SQSName - The name of the SQS queue that will hold events resulting from S3 uploads to the Shepard trigger bucket.
 
 ##### **Lambda Parameters**
-  * <ins>LambdaMemorySize</ins> - This is the RAM in MiB allocated to the Lambda that's used to process s3 uploads into Batch jobs by Shepard. This is by default set to the lowest possible value of 128 MiB and to be honest it probably doesn't ever need to get raised for any reason. You *might* get *slight* speed improvements if raise this but I doubt they would be relevant event if they occurred in 99.999..% of workflows you'd be running. So if you'd like to pay more money for what probably will be no improvement to you please feel free to raise this number.
-  * <ins>DaysToKeepFailedLaunchIndexes</ins> - The DynamoDB that stores updating attributes for Shepard apps is self cleaning in that when jobs finish they will change the TTL (time to live) for the indexes associated with those jobs to the present time causing them to be deleted. If a job dies before it gets a chance to adjust the TTL there's a default TTL that's set by the Lambda that batches out jobs from S3 jobs and this number is an integer that determines how many days those indexes will be kept before they're deleted. The whole idea behind this parameter is to give you time to check things for error handling if necessary but also to save you money by not having you store failed job indexes in a DynamoDB forever. 
+  * LambdaMemorySize - This is the RAM in MiB allocated to the Lambda that's used to process s3 uploads into Batch jobs by Shepard. This is by default set to the lowest possible value of 128 MiB and to be honest it probably doesn't ever need to get raised for any reason. You *might* get *slight* speed improvements if raise this but I doubt they would be relevant event if they occurred in 99.999..% of workflows you'd be running. So if you'd like to pay more money for what probably will be no improvement to you please feel free to raise this number.
+  * DaysToKeepFailedLaunchIndexes - The DynamoDB that stores updating attributes for Shepard apps is self cleaning in that when jobs finish they will change the TTL (time to live) for the indexes associated with those jobs to the present time causing them to be deleted. If a job dies before it gets a chance to adjust the TTL there's a default TTL that's set by the Lambda that batches out jobs from S3 jobs and this number is an integer that determines how many days those indexes will be kept before they're deleted. The whole idea behind this parameter is to give you time to check things for error handling if necessary but also to save you money by not having you store failed job indexes in a DynamoDB forever. 
 
 ##### **Extra IAM Policy Parameters**
-  * <ins>ExtraIAMPolicyForContainerRole</ins> - Extra IAM policy that will be attached to the role for your containerized workloads if set.
+  * ExtraIAMPolicyForContainerRole - Extra IAM policy that will be attached to the role for your containerized workloads if set.
 
 ##### **Networking Parameters**
-  * <ins>CreateNewVPC</ins> - Set to "True" to create a new VPC for this flock. If set to "False" then the "ExistingVPC*" parameters must be used to specify an existing VPC to use for the flock.
-  * <ins>EnvironmentName</ins> - A name that will be prefixed to network resource names for this flock.
-  * <ins>VpcCIDR</ins> - The CIDR that will be given to the VPC that this flock will be put into.
-  * <ins>PublicSubnet1CIDR</ins> - A CIDR representing a subset of I.P. addresses specified in the VpcCIDR that will be accessible to the public subnet created in the first availability zone of the region you build the cloudformation in.
-  * <ins>PublicSubnet2CIDR</ins> - A CIDR representing a subset of I.P. addresses specified in the VpcCIDR that will be accessible to the public subnet created in the second availability zone of the region you build the cloudformation in.
-  * <ins>PrivateSubnet1CIDR</ins> - A CIDR representing a subset of I.P. addresses specified in the VpcCIDR that will be accessible to the private subnet created in the first availability zone of the region you build the cloudformation in.
-  * <ins>PrivateSubnet2CIDR</ins> - A CIDR representing a subset of I.P. addresses specified in the VpcCIDR that will be accessible to the private subnet created in the second availability zone of the region you build the cloudformation in.
-  * <ins>CIDRToAllowSSHAccessTo</ins> - A CIDR representing I.P. addresses you would like to allow SSH access to your instances to.
-  * <ins>AllowSSHAccessToCIDRToAllowSSHAccessTo</ins> - If you set this to "True" the CIDR specified in the "CIDRToAllowSSHAccessTo" parameter will be granted access to SSH into instances running your jobs on port 22.
-  * <ins>MakeSubnetsPublic</ins> - If you set this to "True" your instances running jobs will be spun up in the public subnets of this flock where they will get public I.P. addresses mapped to them whereas if you set this to "False" your instances will be spun up in the private subnets of this flock where they will not get public I.P. addresses mapped to them.
-  * <ins>VPCCidrMaskPrivate</ins> - CIDR mask set for the private subnets created if a new VPC is created for this flock. Defaults to 24.
-  * <ins>VPCCidrMaskPublic</ins> - CIDR mask set for the public subnets created if a new VPC is created for this flock. Defaults to 28.
-  * <ins>ExistingVPC</ins> - An existing VPC that can be specified for usage for this flock if you'd not like to have to create a new VPC. Leave blank to create a new VPC for this flock. 
-  * <ins>ExistingVPCCidr</ins> - A CIDR representing a subset of I.P. addresses specified in the ExistingVPC that will be used for sheep. Can be ignored if ExistingVPC is not set and a new VPC is being created for the flock. 
-  * <ins>ExistingSubnetID1</ins> - An I.D. of an existing subnet in the existing VPC referenced in the ExistingVPC variable you'd like to use as part of your architecture. Can be ignored if ExistingVPC is not set and a new VPC is being created for the flock.
-  * <ins>ExistingSubnetID2</ins> - An I.D. of an existing subnet in the existing VPC referenced in the ExistingVPC variable you'd like to use as part of your architecture. Can be ignored if ExistingVPC is not set and a new VPC is being created for the flock.
-  * <ins>ExistingSubnetID3</ins> - An I.D. of an existing subnet in the existing VPC referenced in the ExistingVPC variable you'd like to use as part of your architecture. Can be ignored if ExistingVPC is not set and a new VPC is being created for the flock.
+  * CreateNewVPC - Set to "True" to create a new VPC for this flock. If set to "False" then the "ExistingVPC*" parameters must be used to specify an existing VPC to use for the flock.
+  * EnvironmentName - A name that will be prefixed to network resource names for this flock.
+  * VpcCIDR - The CIDR that will be given to the VPC that this flock will be put into.
+  * PublicSubnet1CIDR - A CIDR representing a subset of I.P. addresses specified in the VpcCIDR that will be accessible to the public subnet created in the first availability zone of the region you build the cloudformation in.
+  * PublicSubnet2CIDR - A CIDR representing a subset of I.P. addresses specified in the VpcCIDR that will be accessible to the public subnet created in the second availability zone of the region you build the cloudformation in.
+  * PrivateSubnet1CIDR - A CIDR representing a subset of I.P. addresses specified in the VpcCIDR that will be accessible to the private subnet created in the first availability zone of the region you build the cloudformation in.
+  * PrivateSubnet2CIDR - A CIDR representing a subset of I.P. addresses specified in the VpcCIDR that will be accessible to the private subnet created in the second availability zone of the region you build the cloudformation in.
+  * CIDRToAllowSSHAccessTo - A CIDR representing I.P. addresses you would like to allow SSH access to your instances to.
+  * AllowSSHAccessToCIDRToAllowSSHAccessTo - If you set this to "True" the CIDR specified in the "CIDRToAllowSSHAccessTo" parameter will be granted access to SSH into instances running your jobs on port 22.
+  * MakeSubnetsPublic - If you set this to "True" your instances running jobs will be spun up in the public subnets of this flock where they will get public I.P. addresses mapped to them whereas if you set this to "False" your instances will be spun up in the private subnets of this flock where they will not get public I.P. addresses mapped to them.
+  * VPCCidrMaskPrivate - CIDR mask set for the private subnets created if a new VPC is created for this flock. Defaults to 24.
+  * VPCCidrMaskPublic - CIDR mask set for the public subnets created if a new VPC is created for this flock. Defaults to 28.
+  * ExistingVPC - An existing VPC that can be specified for usage for this flock if you'd not like to have to create a new VPC. Leave blank to create a new VPC for this flock. 
+  * ExistingVPCCidr - A CIDR representing a subset of I.P. addresses specified in the ExistingVPC that will be used for sheep. Can be ignored if ExistingVPC is not set and a new VPC is being created for the flock. 
+  * ExistingSubnetID1 - An I.D. of an existing subnet in the existing VPC referenced in the ExistingVPC variable you'd like to use as part of your architecture. Can be ignored if ExistingVPC is not set and a new VPC is being created for the flock.
+  * ExistingSubnetID2 - An I.D. of an existing subnet in the existing VPC referenced in the ExistingVPC variable you'd like to use as part of your architecture. Can be ignored if ExistingVPC is not set and a new VPC is being created for the flock.
+  * ExistingSubnetID3 - An I.D. of an existing subnet in the existing VPC referenced in the ExistingVPC variable you'd like to use as part of your architecture. Can be ignored if ExistingVPC is not set and a new VPC is being created for the flock.
 
 #### CLI Configuration Options
 
