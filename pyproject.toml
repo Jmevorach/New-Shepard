@@ -1,0 +1,31 @@
+[project]
+name = "shepard"
+version = "0.2.0"
+authors = [
+  { name="Shepard Team", email="shepard_dev_group@googlegroups.com" },
+]
+description = "Automating the creation of batch processing workflows in AWS!"
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "License :: OSI Approved :: MIT License"
+]
+dependencies = [
+  'click',
+  'boto3',
+  'awscli',
+  'validators',
+  'aws-cdk-lib',
+  'constructs'
+]
+
+[project.urls]
+"Homepage" = "https://github.com/Jmevorach/New-Shepard"
+"Bug Tracker" = "https://github.com/Jmevorach/New-Shepard/issues"
+
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[project.scripts]
+shepard = "shepard.cli:run"
