@@ -1069,6 +1069,11 @@ class ShepardStack(Stack):
                                               visibility_timeout=Duration.seconds(43200)
                                               )
 
+        shepard_dead_letter_queue = sqs.DeadLetterQueue(
+            max_receive_count=1,
+            queue=shepard_receive_queue
+        )
+
         # attach tags if requested to new infrastructure
         if self.node.try_get_context("ResourceTags"):
             for key, value in self.node.try_get_context("ResourceTags").items():
@@ -1636,6 +1641,19 @@ class ShepardStack(Stack):
                   description='URL of the normal receive SQS queue created for this architecture',
                   export_name=stack_name + "NormalReceiveSQSQueueURL", )
 
+        #for dead letter queue
+        CfnOutput(self, "DLQSQSQueueARN",
+                  value=shepard_dead_letter_queue.queue_arn,
+                  description='ARN of the DLQ SQS queue created for this architecture',
+                  export_name=stack_name + "NormalReceiveSQSQueueARN", )
+        CfnOutput(self, "DLQSQSQueueName",
+                  value=shepard_dead_letter_queue.queue_name,
+                  description='Name of the DLQ SQS queue created for this architecture',
+                  export_name=stack_name + "NormalReceiveSQSQueueName", )
+        CfnOutput(self, "DLQSQSQueueURL",
+                  value=shepard_dead_letter_queue.queue_url,
+                  description='URL of the DLQ SQS queue created for this architecture',
+                  export_name=stack_name + "NormalReceiveSQSQueueURL", )
 
         #################################CFN OUTPUT/EXPORT SETUP ENDS HERE#################################
 

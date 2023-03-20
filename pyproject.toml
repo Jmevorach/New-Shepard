@@ -1,6 +1,6 @@
 [project]
 name = "shepard"
-version = "0.8.1"
+version = "0.8.2"
 authors = [
   { name="Shepard Team", email="shepard_dev_group@googlegroups.com" },
 ]
@@ -11,12 +11,12 @@ classifiers = [
     "License :: OSI Approved :: MIT License"
 ]
 dependencies = [
-  'click',
-  'boto3',
-  'awscli',
-  'validators',
-  'aws-cdk-lib',
-  'constructs'
+  'click==8.1.3',
+  'boto3==1.26.89',
+  'awscli==1.27.89',
+  'validators==0.20.0',
+  'aws-cdk-lib==2.68.0',
+  'constructs==10.1.275'
 ]
 
 [project.urls]
