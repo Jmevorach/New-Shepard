@@ -165,7 +165,7 @@ def release_role():
     return
 
 def check_for_updates():
-    subprocess.check_call([sys.executable, "-m", "pip", "install", 'shepard', '--upgrade'])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", 'shepard'])
     return 0
 
 def check_for_environment_variables(account_number, role_to_assume_to_target_account, path_to_deployment_folder, ecr_repo_to_push_to, path_to_local_folder_to_batch, s3_bucket_to_upload_to, dynamo_db_to_query, cloudformation_stack_name, path_to_local_secrets, secret_store, s3_bucket_for_results, directory_to_sync_s3_bucket_to, lambda_to_invoke):
@@ -331,23 +331,12 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
                 newsession_key,
                 newsession_token
             ).client('ecr')
-
-            # Here I create an iam client using the assumed creds.
-            iam_assumed_client = get_session(
-                region,
-                newsession_id,
-                newsession_key,
-                newsession_token
-            ).client('iam')
         else:
             # Here I create a cloudformation client using environment creds.
             cloudformation_assumed_client = boto3.session.Session(region_name=region).client('cloudformation')
 
             # Here I create an ecr client using environment creds.
             ecr_assumed_client = boto3.session.Session(region_name=region).client('ecr')
-
-            # Here I create an iam client using environment creds.
-            iam_assumed_client = boto3.session.Session(region_name=region).client('iam')
 
         # query the cloudformation_stack_name to get outputs
         response = cloudformation_assumed_client.describe_stacks(StackName=cloudformation_stack_name)
@@ -363,20 +352,6 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
 
         # delete ecr repo
         response = ecr_assumed_client.delete_repository(repositoryName=ecr_repo_to_push_to,force=True)
-        print(response)
-
-        # get ECS instance role from CFN output
-        ecs_instance_role = search_result_dictionary['ECSInstanceRole']
-
-        # delete ECS instance role
-        response = iam_assumed_client.delete_role(RoleName=ecs_instance_role)
-        print(response)
-
-        # get ECS instance profile from CFN output
-        ecs_instance_profile = search_result_dictionary['ECSInstanceProfile']
-
-        # delete instance profile
-        response = iam_assumed_client.delete_repository(InstanceProfileName=ecs_instance_profile)
         print(response)
 
         # delete cloudformation stack
@@ -423,7 +398,7 @@ def fetch_latest_worker_container_code():
 
     return 0
 
-def build_nested_container(path_to_deployment_folder,dev):
+def build_nested_container(path_to_deployment_folder):
     if os.path.exists(os.path.join(os.getcwd(),'docker_folder')):
         shutil.rmtree(os.path.join(os.getcwd(),'docker_folder'))
 
@@ -431,47 +406,28 @@ def build_nested_container(path_to_deployment_folder,dev):
 
     copy_tree(path_to_deployment_folder,os.path.join(os.getcwd(),'docker_folder'))
 
-    # run deployment script if exists
-    if os.path.isfile('deployment_script.sh'):
-        print('"deployment_script.sh" file detected. Setting appropriate file permissions and running now.')
-        rc = subprocess.call("chmod u+rx deployment_script.sh", shell=True)
-        if rc != 0:
-            print('"chmod u+rx deployment_script.sh" call failed!')
+    try:
+        result = subprocess.call('docker rm --force ' + slugify(path_to_deployment_folder) + '_instance ', shell=True)
+    except:
+        pass
 
-        rc = subprocess.call("./deployment_script.sh", shell=True)
-        if rc != 0:
-            print('"./deployment_script.sh" call failed!')
+    try:
+        result = subprocess.call('docker build --no-cache -f Dockerfile.txt -t '+slugify(path_to_deployment_folder)+':latest .',shell=True)
 
-    #if dev flag is set to true build from source otherwise pull from dockerhub
-    if dev == 'True':
+        if result != 0:
+            raise ValueError('Docker build command failed. Could not build initial worker container. Process is being aborted.')
+
+    except:
         try:
-            result = subprocess.call('docker rm --force ' + slugify(path_to_deployment_folder) + '_instance ', shell=True)
-        except:
-            pass
-
-        try:
-            result = subprocess.call('docker build --no-cache -f Dockerfile.txt -t '+slugify(path_to_deployment_folder)+':latest .',shell=True)
+            result = subprocess.call('docker build --no-cache -f Dockerfile -t '+slugify(path_to_deployment_folder)+':latest .',shell=True)
 
             if result != 0:
                 raise ValueError('Docker build command failed. Could not build initial worker container. Process is being aborted.')
 
-        except:
-            try:
-                result = subprocess.call('docker build --no-cache -f Dockerfile -t '+slugify(path_to_deployment_folder)+':latest .',shell=True)
-
-                if result != 0:
-                    raise ValueError('Docker build command failed. Could not build initial worker container. Process is being aborted.')
-
-            except Exception as error:
-                traceback.print_tb(error.__traceback__)
-                print('Could not deploy. Docker was not properly configured or no file named "Dockerfile.txt" or "Dockerfile" was found in the path to deploy from.')
-                raise ValueError(str(error))
-    else:
-        # pull latest Shepard worker container code
-        result = subprocess.call('docker pull sheparddeploybot/shepard-worker-container:latest', shell=True)
-
-        # rename Shepard worker container code to expected name
-        result = subprocess.call('docker image tag sheparddeploybot/shepard-worker-container:latest '+slugify(path_to_deployment_folder)+':latest', shell=True)
+        except Exception as error:
+            traceback.print_tb(error.__traceback__)
+            print('Could not deploy. Docker was not properly configured or no file named "Dockerfile.txt" or "Dockerfile" was found in the path to deploy from.')
+            raise ValueError(str(error))
 
     result = subprocess.call('docker run --name '+slugify(path_to_deployment_folder)+'_instance --privileged=true -v /var/run/docker.sock:/var/run/docker.sock '+slugify(path_to_deployment_folder),shell=True)
 
@@ -556,7 +512,7 @@ def push_to_ecr(account_number,role_to_assume_to_target_account,ecr_repo_to_push
 
     return 0
 
-def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_name,path_to_deployment_folder,ecr_repo_to_push_to,dont_assume,mfa_token,serial_number,dev):
+def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_name,path_to_deployment_folder,ecr_repo_to_push_to,dont_assume,mfa_token,serial_number):
     #get default account number from CLI
     region = check_output('aws configure get region', shell=True).strip().decode("utf-8")
 
@@ -648,20 +604,19 @@ def deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_
                     path_to_deployment_folder=path_to_deployment_folder, called_by_deploy_function=True)
 
     #deploy code to ECR
-    if dev == 'True':
-        path_to_docker_folder = os.path.join(path_to_deployment_folder,'code')
-        print('fetching latest worker container code ...')
-        try:
-            fetch_latest_worker_container_code()
-        except Exception as error:
-            traceback.print_tb(error.__traceback__)
-            print('fetching latest worker container code failed')
-            raise ValueError(str(error))
-        print('fetching latest worker container code succeeded')
+    path_to_docker_folder = os.path.join(path_to_deployment_folder,'code')
+    print('fetching latest worker container code ...')
+    try:
+        fetch_latest_worker_container_code()
+    except Exception as error:
+        traceback.print_tb(error.__traceback__)
+        print('fetching latest worker container code failed')
+        raise ValueError(str(error))
+    print('fetching latest worker container code succeeded')
 
     print('building shepard style nested container ...')
     try:
-        build_nested_container(path_to_docker_folder,dev)
+        build_nested_container(path_to_docker_folder)
     except Exception as error:
         traceback.print_tb(error.__traceback__)
         print('building shepard style nested container failed')

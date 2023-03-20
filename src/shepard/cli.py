@@ -31,8 +31,7 @@ from .lib import deploy,destroy,batch,query,describe,secretify,configure,check_f
 @click.option("--serial_number", help="Set this flag whenever you use set the mfa_token flag. This should be the ARN of the mfa device you're using to generate a token.", default=None)
 @click.option("--lambda_to_invoke", help="Use this to describe a lambda for invoke calls to the api batching endpoint for an architecture.", default=None)
 @click.option("--json_payload", help="A json filled with variables to send to the batching api endpoint.", default=None)
-@click.option("--dev", help="Flag to set to 'True' to enable dev features aimed at assisting development.", default=None)
-def run(command,account_number, use_env_variables, role_to_assume_to_target_account, path_to_deployment_folder, ecr_repo_to_push_to, path_to_local_folder_to_batch, s3_bucket_to_upload_to, dynamo_db_to_query, cloudformation_stack_name, path_to_local_secrets, secret_store, profile_name, zip_name_override, s3_bucket_for_results, directory_to_sync_s3_bucket_to, dont_assume, mfa_token, serial_number, lambda_to_invoke, json_payload, dev):
+def run(command,account_number, use_env_variables, role_to_assume_to_target_account, path_to_deployment_folder, ecr_repo_to_push_to, path_to_local_folder_to_batch, s3_bucket_to_upload_to, dynamo_db_to_query, cloudformation_stack_name, path_to_local_secrets, secret_store, profile_name, zip_name_override, s3_bucket_for_results, directory_to_sync_s3_bucket_to, dont_assume, mfa_token, serial_number, lambda_to_invoke, json_payload):
 
     #Get initial context. This will be used for parsing inputs to functions just before their respective calls.
     initial_context = locals().copy()
@@ -168,13 +167,13 @@ def run(command,account_number, use_env_variables, role_to_assume_to_target_acco
     if command == 'deploy':
 
         minimum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','cloudformation_stack_name','path_to_deployment_folder']
-        maximum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','cloudformation_stack_name','path_to_deployment_folder','ecr_repo_to_push_to','dont_assume','mfa_token','serial_number','dev']
+        maximum_variables_to_be_declared = ['account_number','role_to_assume_to_target_account','cloudformation_stack_name','path_to_deployment_folder','ecr_repo_to_push_to','dont_assume','mfa_token','serial_number']
         variables_exempt_from_parsing = ['use_env_variables']
 
         parse_inputs(command, minimum_variables_to_be_declared, maximum_variables_to_be_declared,
                      variables_exempt_from_parsing, initial_context, locals().copy())
 
-        deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_name,path_to_deployment_folder,ecr_repo_to_push_to,dont_assume,mfa_token,serial_number,dev)
+        deploy(account_number,role_to_assume_to_target_account,cloudformation_stack_name,path_to_deployment_folder,ecr_repo_to_push_to,dont_assume,mfa_token,serial_number)
 
     if command == 'destroy':
 

@@ -10,7 +10,7 @@ on:
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
 
-  # This workflow contains a job called "publish_to_pypi"
+  # This workflow contains a single job called "publish_to_pypi"
   publish_to_pypi:
 
     # The type of runner that the job will run on
@@ -19,7 +19,7 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
 
-      # checkout the published branch
+      #checkout the published branch
       - name: Checkout
         uses: actions/checkout@v3
         with:
@@ -33,41 +33,3 @@ jobs:
         uses: pypa/gh-action-pypi-publish@release/v1
         with:
           password: ${{ secrets.PYPI_API_TOKEN }}
-
-  # This workflow contains a job called "publish_to_dockerhub"
-  push_to_registry:
-
-    # The type of runner that the job will run on
-    runs-on: ubuntu-latest
-
-    # Steps represent a sequence of tasks that will be executed as part of the job
-    steps:
-
-        # checkout the published branch
-      - name: Check out the repo
-        uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
-
-      # login to Docker Hub
-      - name: Log in to Docker Hub
-        uses: docker/login-action@f054a8b539a109f9f41c372932f1ae047eff08c9
-        with:
-          username: ${{ secrets.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_ACCESS_TOKEN }}
-
-      # extract metadata from dockerhub
-      - name: Extract metadata (tags, labels) for Docker
-        id: meta
-        uses: docker/metadata-action@98669ae865ea3cffbcbaa878cf57c20bbf1c6c38
-        with:
-          images: sheparddeploybot/shepard-worker-container
-
-      # build and push image to dockerhub
-      - name: Build and push Docker image
-        uses: docker/build-push-action@ad44023a93711e3deb337508980b4b5e9bcdc5dc
-        with:
-          context: ./code/
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
-          labels: ${{ steps.meta.outputs.labels }}
