@@ -30,12 +30,12 @@ RUN apk add --no-cache --virtual .build-deps g++ python3-dev libffi-dev openssl-
 # ---------------------
 # PIP INSTALL BOTO3
 # ---------------------
-RUN pip3 install boto3
+RUN pip3 install boto3==1.26.89
 
 # ---------------------
 # PIP INSTALL AWSCLI
 # ---------------------
-RUN pip3 install awscli
+RUN pip3 install awscli==1.27.89
 
 # ---------------------
 # IMPORT GUEST DOCKERFILE AND CONTENTS
