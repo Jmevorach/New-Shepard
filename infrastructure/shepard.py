@@ -1540,6 +1540,12 @@ class ShepardStack(Stack):
                   description='ARN of the ECS instance role created for this architecture.',
                   export_name=stack_name + "ECSInstanceRoleARN", )
 
+        # export ecs instance role ARN.
+        CfnOutput(self, "ECSInstanceProfileName",
+                  value=ecs_instance_profile.ref,
+                  description='Name of the ECS instance profile created for this architecture.',
+                  export_name=stack_name + "ECSInstanceProfileName", )
+
         # export spot fleet role ARN.
         CfnOutput(self, "SpotFleetRoleARN",
                   value=spot_fleet_role.role_arn,
