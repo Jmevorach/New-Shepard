@@ -1,6 +1,6 @@
 [project]
 name = "shepard"
-version = "0.8.5"
+version = "0.8.6"
 authors = [
   { name="Shepard Team", email="shepard_dev_group@googlegroups.com" },
 ]

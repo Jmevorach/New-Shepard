@@ -1057,16 +1057,29 @@ class ShepardStack(Stack):
 
         #create SQS queue for S3 bucket events from the input S3 bucket.
 
+        dead_letter_queue = sqs.Queue(self, "DeadLetterQueue",
+                                      retention_period=Duration.seconds(1209600),
+                                      visibility_timeout=Duration.seconds(43200)
+                                      )
+
         if self.node.try_get_context("SQSName"):
             shepard_receive_queue = sqs.Queue(self, "SQSShepardReceiveQueue",
                                               queue_name=self.node.try_get_context("SQSName"),
                                               retention_period=Duration.seconds(1209600),
-                                              visibility_timeout=Duration.seconds(43200)
+                                              visibility_timeout=Duration.seconds(43200),
+                                              dead_letter_queue=sqs.DeadLetterQueue(
+                                                  max_receive_count=1,
+                                                  queue=dead_letter_queue
+                                              )
                                               )
         else:
             shepard_receive_queue = sqs.Queue(self, "SQSShepardReceiveQueue",
                                               retention_period=Duration.seconds(1209600),
-                                              visibility_timeout=Duration.seconds(43200)
+                                              visibility_timeout=Duration.seconds(43200),
+                                              dead_letter_queue=sqs.DeadLetterQueue(
+                                                  max_receive_count=1,
+                                                  queue=dead_letter_queue
+                                              )
                                               )
 
         # attach tags if requested to new infrastructure
@@ -1635,8 +1648,6 @@ class ShepardStack(Stack):
                   value=shepard_receive_queue.queue_url,
                   description='URL of the normal receive SQS queue created for this architecture',
                   export_name=stack_name + "NormalReceiveSQSQueueURL", )
-
-
         #################################CFN OUTPUT/EXPORT SETUP ENDS HERE#################################
 
 

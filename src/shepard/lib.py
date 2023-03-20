@@ -165,7 +165,7 @@ def release_role():
     return
 
 def check_for_updates():
-    subprocess.check_call([sys.executable, "-m", "pip", "install", 'shepard'])
+    subprocess.check_call([sys.executable, "-m", "pip", "install", 'shepard', '--upgrade'])
     return 0
 
 def check_for_environment_variables(account_number, role_to_assume_to_target_account, path_to_deployment_folder, ecr_repo_to_push_to, path_to_local_folder_to_batch, s3_bucket_to_upload_to, dynamo_db_to_query, cloudformation_stack_name, path_to_local_secrets, secret_store, s3_bucket_for_results, directory_to_sync_s3_bucket_to, lambda_to_invoke):
