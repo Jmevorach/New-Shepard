@@ -331,12 +331,23 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
                 newsession_key,
                 newsession_token
             ).client('ecr')
+
+            # Here I create an iam client using the assumed creds.
+            iam_assumed_client = get_session(
+                region,
+                newsession_id,
+                newsession_key,
+                newsession_token
+            ).client('iam')
         else:
             # Here I create a cloudformation client using environment creds.
             cloudformation_assumed_client = boto3.session.Session(region_name=region).client('cloudformation')
 
             # Here I create an ecr client using environment creds.
             ecr_assumed_client = boto3.session.Session(region_name=region).client('ecr')
+
+            # Here I create an iam client using environment creds.
+            iam_assumed_client = boto3.session.Session(region_name=region).client('iam')
 
         # query the cloudformation_stack_name to get outputs
         response = cloudformation_assumed_client.describe_stacks(StackName=cloudformation_stack_name)
@@ -352,6 +363,20 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
 
         # delete ecr repo
         response = ecr_assumed_client.delete_repository(repositoryName=ecr_repo_to_push_to,force=True)
+        print(response)
+
+        # get ECS instance role from CFN output
+        ecs_instance_role = search_result_dictionary['ECSInstanceRole']
+
+        # delete ECS instance role
+        response = iam_assumed_client.delete_role(RoleName=ecs_instance_role)
+        print(response)
+
+        # get ECS instance profile from CFN output
+        ecs_instance_profile = search_result_dictionary['ECSInstanceProfile']
+
+        # delete instance profile
+        response = iam_assumed_client.delete_repository(InstanceProfileName=ecs_instance_profile)
         print(response)
 
         # delete cloudformation stack
