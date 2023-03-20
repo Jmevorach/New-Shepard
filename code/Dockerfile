@@ -56,4 +56,5 @@ WORKDIR /
 # ---------------------
 # SET CMD FOR BUILDING WORKER CONTAINER
 # ---------------------
-CMD cd docker_folder && docker build -f Dockerfile.txt -t payload_image:latest . && docker save -o payload.tar payload_image:latest && ls -lah && mv payload.tar / && rm -f payload.tar && cd ..
+CMD cd docker_folder && docker build -f Dockerfile.txt -t payload_image:latest . && docker save -o payload.tar payload_image:latest && ls -lah && mv 
+payload.tar / && rm -f payload.tar && cd ..
