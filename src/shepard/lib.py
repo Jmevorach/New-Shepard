@@ -372,6 +372,9 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
         # get ECS instance role from CFN output
         ecs_instance_role = search_result_dictionary['ECSInstanceRoleName']
 
+        # get ECS instance profile from CFN output
+        ecs_instance_profile = search_result_dictionary['ECSInstanceProfileName']
+
         # detach policies from role
         try:
             
@@ -394,6 +397,17 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
             traceback.print_tb(error.__traceback__)
             print('attempt to detach policy from ecs instance role failed.')
 
+        # remove ECS instance role from instance profile
+        try:
+            response = iam_assumed_client.remove_role_from_instance_profile(
+                InstanceProfileName=ecs_instance_profile,
+                RoleName=ecs_instance_role
+            )
+            print(response)
+        except Exception as error:
+            traceback.print_tb(error.__traceback__)
+            print('attempt to remove ecs instance role from ecs instance profile failed.')
+
         # delete ECS instance role
         try:
             response = iam_assumed_client.delete_role(RoleName=ecs_instance_role)
@@ -401,9 +415,6 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
         except Exception as error:
             traceback.print_tb(error.__traceback__)
             print('attempt to delete ecs instance role failed.')
-
-        # get ECS instance profile from CFN output
-        ecs_instance_profile = search_result_dictionary['ECSInstanceProfileName']
 
         # delete instance profile
         try:
