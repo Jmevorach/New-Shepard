@@ -121,7 +121,7 @@ shepard batch_via_api --json_payload '{"an_example_variable_name":"an_example_va
 #this job will succeed
 shepard batch_via_api --json_payload '{"test1":"test1","test2":"test2","test3":"test3","test4":"0"}'
 
-#after the jobs complete you can tear down most of the infrastructure with the following command
+#after the jobs complete you can tear down the infrastructure with the following command
 shepard destroy --cloudformation_stack_name testing
 ```
 
