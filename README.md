@@ -1,7 +1,5 @@
 # Shepard
 
-# Alpha release! User feedback, code contributions and/or bug reports are greatly appreciated!
-
 ## Table of contents
 
 - [Shepard](#shepard)
@@ -93,6 +91,11 @@ Shepard is a one-stop shop to make highly scalable easy to manage batch workflow
 The project is named after Alan Shepard who was the first American to travel into space. It was also named as a playful jab at Rancher which is a program that I spent a lot of time supporting. Rancher is a program that manages "herds" of "cattle" while Shepard manages "flocks" of "sheep". A "flock" is technically the term used for an instance of a Shepard architecture and a "sheep" is an instance running within that "flock". Keep in mind I will use "EC2 instance" and "sheep" interchangeably and will also use "flock" and "instance of an architecture" interchangeably going forward in the rest of the documentation.
 
 ### Requirements
+You must have the following minimum system requirements to use Shepard.
+  * OS: Amazon Linux 2 (AL2) (it may work for other operating systems but this was what testing was done on)
+  * 2 cores; 8 GiB of RAM
+  * 16 GB of disk space
+
 You must have the following tools installed and set up to use Shepard.
   * [Docker](https://docs.docker.com/engine/) 
   * [Python](https://docs.python.org/3/using/unix.html#getting-and-installing-the-latest-version-of-python) 
