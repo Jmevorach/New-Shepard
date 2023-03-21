@@ -366,7 +366,7 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
         print(response)
 
         # get ECS instance role from CFN output
-        ecs_instance_role = search_result_dictionary['ECSInstanceRoleARN']
+        ecs_instance_role = search_result_dictionary['ECSInstanceRoleName']
 
         # delete ECS instance role
         response = iam_assumed_client.delete_role(RoleName=ecs_instance_role)
