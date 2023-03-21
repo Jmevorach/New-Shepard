@@ -94,7 +94,7 @@ The project is named after Alan Shepard who was the first American to travel int
 You must have the following minimum system requirements to use Shepard.
   * OS: Amazon Linux 2 (AL2) (it may work for other operating systems but this was what testing was done on)
   * 2 cores; 8 GiB of RAM
-  * 16 GB of disk space
+  * 32 GB of disk space
 
 You must have the following tools installed and set up to use Shepard.
   * [Docker](https://docs.docker.com/engine/) 
