@@ -1543,7 +1543,7 @@ class ShepardStack(Stack):
                   export_name=stack_name + "ECSInstanceRoleARN", )
 
         # export ecs instance role ARN.
-        CfnOutput(self, "ECSInstanceRoleNAME",
+        CfnOutput(self, "ECSInstanceRoleName",
                   value=ecs_instance_role.role_name,
                   description='Name of the ECS instance role created for this architecture.',
                   export_name=stack_name + "ECSInstanceRoleName", )

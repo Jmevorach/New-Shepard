@@ -362,26 +362,46 @@ def destroy(account_number,role_to_assume_to_target_account,cloudformation_stack
         ecr_repo_to_push_to = search_result_dictionary['EcrRepoRepositoryName']
 
         # delete ecr repo
-        response = ecr_assumed_client.delete_repository(repositoryName=ecr_repo_to_push_to,force=True)
-        print(response)
+        try:
+            response = ecr_assumed_client.delete_repository(repositoryName=ecr_repo_to_push_to,force=True)
+            print(response)
+        except Exception as error:
+            traceback.print_tb(error.__traceback__)
+            print('attempt to delete ecr repo failed.')
+            raise ValueError(str(error))
 
         # get ECS instance role from CFN output
         ecs_instance_role = search_result_dictionary['ECSInstanceRoleName']
 
         # delete ECS instance role
-        response = iam_assumed_client.delete_role(RoleName=ecs_instance_role)
-        print(response)
+        try:
+            response = iam_assumed_client.delete_role(RoleName=ecs_instance_role)
+            print(response)
+        except Exception as error:
+            traceback.print_tb(error.__traceback__)
+            print('attempt to delete ecs instance role failed.')
+            raise ValueError(str(error))
 
         # get ECS instance profile from CFN output
         ecs_instance_profile = search_result_dictionary['ECSInstanceProfileName']
 
         # delete instance profile
-        response = iam_assumed_client.delete_repository(InstanceProfileName=ecs_instance_profile)
-        print(response)
+        try:
+            response = iam_assumed_client.delete_repository(InstanceProfileName=ecs_instance_profile)
+            print(response)
+        except Exception as error:
+            traceback.print_tb(error.__traceback__)
+            print('attempt to delete ecs instance profile failed.')
+            raise ValueError(str(error))
 
         # delete cloudformation stack
-        response = cloudformation_assumed_client.delete_stack(StackName=cloudformation_stack_name)
-        print(response)
+        try:
+            response = cloudformation_assumed_client.delete_stack(StackName=cloudformation_stack_name)
+            print(response)
+        except Exception as error:
+            traceback.print_tb(error.__traceback__)
+            print('attempt to delete cloudformation stack failed.')
+            raise ValueError(str(error))
 
     except Exception as error:
         traceback.print_tb(error.__traceback__)
