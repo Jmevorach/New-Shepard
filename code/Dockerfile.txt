@@ -2,7 +2,7 @@
 # Author: Jacob Mevorach
 
 ########################### ESTABLISH BASE IMAGE ##################################
-FROM docker:23.0-dind
+FROM docker:dind
 MAINTAINER shepard_dev_group@googlegroups.com
 # ---------------------
 # SET WORKING DIRECTORY TO ROOT DIRECTORY
