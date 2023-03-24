@@ -1,86 +1,92 @@
 # Shepard
 
 ## Table of contents
-
 - [Shepard](#shepard)
-  - [Getting started](#getting-started)
-    - [What is Shepard?](#what-is-shepard)
-    - [Requirements](#requirements)
-    - [Hello World Example](#hello-world-example)
-    - [What does running the Hello World Example do?](#what-does-running-the-hello-world-example-do)
-  - [Ready to Use Shepard Setups](#ready-to-use-shepard-setups)
-  - [Joining the Shepard Dev Team](#joining-the-shepard-dev-team)
-    - [How to Join the Team](#how-to-join-the-team)
-    - [General Team rules](#general-team-rules)
-    - [Where to find things](#where-to-find-things)
-  - [Technical Documentation](#technical-documentation)
-    - [Overview of the Flock Architecture](#overview-of-the-flock-architecture)
-    - [Right Sizing Jobs for Shepard](#right-sizing-jobs-for-shepard)
-    - [Instantiating a Flock and Deploying Code to it](#instantiating-a-flock-and-deploying-code-to-it)
-      - [The Structure of the "infrastructure" Folder](#the-structure-of-the-infrastructure-folder)
-      - [The Structure of the "code" Folder](#the-structure-of-the-code-folder)
-    - [Running a Job With Shepard](#running-a-job-with-shepard)
+  * [Table of contents](#table-of-contents)
+  * [Getting started](#getting-started)
+    + [What is Shepard?](#what-is-shepard-)
+    + [Requirements](#requirements)
+    + [Hello World Example](#hello-world-example)
+    + [What does running the Hello World Example do?](#what-does-running-the-hello-world-example-do-)
+  * [Ready to Use Shepard Setups](#ready-to-use-shepard-setups)
+  * [Joining the Shepard Dev Team](#joining-the-shepard-dev-team)
+    + [How to Join the Team](#how-to-join-the-team)
+    + [General Team rules](#general-team-rules)
+    + [Where to find things](#where-to-find-things)
+  * [Technical Documentation](#technical-documentation)
+    + [Overview of the Flock Architecture](#overview-of-the-flock-architecture)
+    + [Right Sizing Jobs for Shepard](#right-sizing-jobs-for-shepard)
+    + [Instantiating a Flock and Deploying Code to it](#instantiating-a-flock-and-deploying-code-to-it)
+      - [The Structure of the "infrastructure" Folder](#the-structure-of-the--infrastructure--folder)
+      - [The Structure of the "code" Folder](#the-structure-of-the--code--folder)
+    + [Running a Job With Shepard](#running-a-job-with-shepard)
       - [Using the Shepard Batch Command](#using-the-shepard-batch-command)
       - [Using the Shepard Batch Via API Command](#using-the-shepard-batch-via-api-command)
-    - [Writing Code for Use With Shepard](#writing-code-for-use-with-shepard)
+    + [Writing Code for Use With Shepard](#writing-code-for-use-with-shepard)
       - [Writing a Container For Use With Shepard](#writing-a-container-for-use-with-shepard)
       - [Shepard Code Example With Explanation](#shepard-code-example-with-explanation)
       - [Using the Quick-Deploy Feature](#using-the-quick-deploy-feature)
       - [Using Non-Public Container Images](#using-non-public-container-images)
-    - [Deploy Secrets to a Flock](#deploy-secrets-to-a-flock)
-    - [Collecting Results From Jobs Run With Shepard](#collecting-results-from-jobs-run-with-shepard)
+    + [Deploy Secrets to a Flock](#deploy-secrets-to-a-flock)
+    + [Collecting Results From Jobs Run With Shepard](#collecting-results-from-jobs-run-with-shepard)
       - [An Overview of Where Job Results Are Stored and How They Can be Retrieved](#an-overview-of-where-job-results-are-stored-and-how-they-can-be-retrieved)
-      - [Tagging Outputs Automatically:](#tagging-outputs-automatically)
-      - [Output Name Formats:](#output-name-formats)
-    - [Detailed Documentation on Configuration Options for Shepard](#detailed-documentation-on-configuration-options-for-shepard)
+      - [Tagging Outputs Automatically:](#tagging-outputs-automatically-)
+      - [Output Name Formats:](#output-name-formats-)
+    + [Special Environment Variables](#special-environment-variables)
+      - [Nonreserved Environment Variables:](#nonreserved-environment-variables-)
+      - [Reserved Environment Variables:](#reserved-environment-variables-)
+      - [Input Location Describing Environment Variables](#input-location-describing-environment-variables)
+      - [Output Location Describing Environment Variables](#output-location-describing-environment-variables)
+      - [Conditional Toggles Environment Variables](#conditional-toggles-environment-variables)
+    + [Detailed Documentation on Configuration Options for Shepard](#detailed-documentation-on-configuration-options-for-shepard)
       - [Flock Configuration Options](#flock-configuration-options)
-        - [** General Stack Parameters**](#-general-stack-parameters)
-        - [**Job Execution Parameters**](#job-execution-parameters)
-        - [**S3 Parameters**](#s3-parameters)
-        - [**DynamoDB Parameters**](#dynamodb-parameters)
-        - [**Secrets Manager Parameters**](#secrets-manager-parameters)
-        - [**Batch Parameters**](#batch-parameters)
-        - [**Instance Tagging Parameters**](#instance-tagging-parameters)
-        - [**ECR Parameters**](#ecr-parameters)
-        - [**File System Parameters**](#file-system-parameters)
-          - [**EFS Parameters**](#efs-parameters)
-          - [**Lustre Parameters**](#lustre-parameters)
-        - [**EBS Volume Parameters**](#ebs-volume-parameters)
-        - [**SQS Parameters**](#sqs-parameters)
-        - [**Lambda Parameters**](#lambda-parameters)
-        - [**Extra IAM Policy Parameters**](#extra-iam-policy-parameters)
-        - [**Networking Parameters**](#networking-parameters)
+        * [** General Stack Parameters**](#---general-stack-parameters--)
+        * [**Job Execution Parameters**](#--job-execution-parameters--)
+        * [**S3 Parameters**](#--s3-parameters--)
+        * [**DynamoDB Parameters**](#--dynamodb-parameters--)
+        * [**Secrets Manager Parameters**](#--secrets-manager-parameters--)
+        * [**Batch Parameters**](#--batch-parameters--)
+        * [**Instance Tagging Parameters**](#--instance-tagging-parameters--)
+        * [**ECR Parameters**](#--ecr-parameters--)
+        * [**File System Parameters**](#--file-system-parameters--)
+          + [**EFS Parameters**](#--efs-parameters--)
+          + [**Lustre Parameters**](#--lustre-parameters--)
+        * [**EBS Volume Parameters**](#--ebs-volume-parameters--)
+        * [**SQS Parameters**](#--sqs-parameters--)
+        * [**Lambda Parameters**](#--lambda-parameters--)
+        * [**Extra IAM Policy Parameters**](#--extra-iam-policy-parameters--)
+        * [**Networking Parameters**](#--networking-parameters--)
       - [CLI Configuration Options](#cli-configuration-options)
-        - [Setting up AWSCLI Credentials](#setting-up-awscli-credentials)
-        - [Shepard CLI Commands](#shepard-cli-commands)
-          - [**auto_configure**](#auto_configure)
-          - [**batch**](#batch)
-          - [**batch_via_api**](#batch_via_api)
-          - [**check_profile**](#check_profile)
-          - [**check_role**](#check_role)
-          - [**check_update**](#check_update)
-          - [**clear_profile_config**](#clear_profile_config)
-          - [**configure**](#configure)
-          - [**delete_profile**](#delete_profile)
-          - [**deploy**](#deploy)
-          - [**describe**](#describe)
-          - [**destroy**](#destroy)
-          - [**query**](#query)
-          - [**release_role**](#release_role)
-          - [**retrieve**](#retrieve)
-          - [**secretify**](#secretify)
-          - [**set_profile**](#set_profile)
-          - [**set_role**](#set_role)
-          - [**where_am_i**](#where_am_i)
-        - [Profiles in Shepard CLI](#profiles-in-shepard-cli)
-          - [Profiles as a Concept](#profiles-as-a-concept)
-          - [Importing Profiles](#importing-profiles)
-          - [Understanding Setting Up a Profile Using the Configure Command](#understanding-setting-up-a-profile-using-the-configure-command)
-        - [Assuming Role and Using the Shepard CLI](#assuming-role-and-using-the-shepard-cli)
-          - [Assuming Role Without Using MFA](#assuming-role-without-using-mfa)
-          - [Assuming Role Using MFA](#assuming-role-using-mfa)
-          - [Using an Instance Attached Role](#using-an-instance-attached-role)
-          - [Assuming Role Via the Shepard CLI](#assuming-role-via-the-shepard-cli)
+        * [Setting up AWSCLI Credentials](#setting-up-awscli-credentials)
+        * [Shepard CLI Commands](#shepard-cli-commands)
+          + [**auto_configure**](#--auto-configure--)
+          + [**batch**](#--batch--)
+          + [**batch_via_api**](#--batch-via-api--)
+          + [**check_profile**](#--check-profile--)
+          + [**check_role**](#--check-role--)
+          + [**check_update**](#--check-update--)
+          + [**clear_profile_config**](#--clear-profile-config--)
+          + [**configure**](#--configure--)
+          + [**delete_profile**](#--delete-profile--)
+          + [**deploy**](#--deploy--)
+          + [**describe**](#--describe--)
+          + [**destroy**](#--destroy--)
+          + [**query**](#--query--)
+          + [**release_role**](#--release-role--)
+          + [**retrieve**](#--retrieve--)
+          + [**secretify**](#--secretify--)
+          + [**set_profile**](#--set-profile--)
+          + [**set_role**](#--set-role--)
+          + [**where_am_i**](#--where-am-i--)
+        * [Profiles in Shepard CLI](#profiles-in-shepard-cli)
+          + [Profiles as a Concept](#profiles-as-a-concept)
+          + [Importing Profiles](#importing-profiles)
+          + [Understanding Setting Up a Profile Using the Configure Command](#understanding-setting-up-a-profile-using-the-configure-command)
+        * [Assuming Role and Using the Shepard CLI](#assuming-role-and-using-the-shepard-cli)
+          + [Assuming Role Without Using MFA](#assuming-role-without-using-mfa)
+          + [Assuming Role Using MFA](#assuming-role-using-mfa)
+          + [Using an Instance Attached Role](#using-an-instance-attached-role)
+          + [Assuming Role Via the Shepard CLI](#assuming-role-via-the-shepard-cli)
       - [Using GPUs For Jobs](#using-gpus-for-jobs)
 
 ## Getting started 
@@ -382,6 +388,57 @@ Results uploaded to the outputs bucket at the end of a job from the path specifi
 Results uploaded to the outputs bucket at the end of a job from the path specified by the __LUSTRE_OUTPUT_NAME__ environment variable will have the following format:
  * if TAG is specified : tag_to_append+'_result@' + UUID + '_' + START_TIME + '_lustre' + '.zip'
  * If TAG is not specified:  'result@' + UUID + '_' + START_TIME + '_lustre' + '.zip'
+
+### Special Environment Variables
+There are special environment variables that Shepard sets or that a user can set and/or query that describe the existing configuration of an architecture or can be used to affect the behavior of an existing architecture.
+
+#### Nonreserved Environment Variables:
+The following environment variables are special but not reserved. Setting these will modify the behavior of an existing architecture but will not cause jobs to be rejected.
+  * __TAG__ - Specifying this will cause the value specified by tag to be appended to the front of any output names of files uploaded to the output bucket by the architecture.
+
+#### Reserved Environment Variables:
+The following environment variables are reserved. Attempting to set these in a json in an inputs.json or in a json_payload file will cause a job to be rejected.
+  * __UUID__ - The unique UUID given to each job run by Shepard
+  * __START_TIME__ - The start time in UTC of the job
+  * __END_TIME__ - The end time in UTC of the job
+  * __JOB_STATUS__ - The status of your job. Possible values are: 'in_progress','calling_payload_code','job failed; pushing logs to s3','<done>','job failed; cleaning up workspace','job_complete_cleaning_up_workspace','job_complete_pushing_to_s3' and 'not_yet_initiated'.
+  * __EFS_INPUT_NAME__ - A path to a folder on the EFS file system you can write to if you've requested an EFS file system for your architecture. Will not be set if you don't request an EFS for your architecture.
+  * __EFS_OUTPUT_NAME__ - A path to folder on the root file system of the host instance that you can write to. Anything written here will be uploaded to the outputs bucket when the job finishes. Will not be set if you don't request an EFS for your architecture.
+  * __LUSTRE_INPUT_NAME__ - A path to a folder on the Lustre file system you can write to if you've requested a Lustre file system for your architecture. Will not be set if you don't request Lustre for your architecture.
+  * __LUSTRE_OUTPUT_NAME__ - A path to a folder on the Lustre file system you can write to if you've requested a Lustre file system for your architecture. Anything written here will be uploaded to the outputs bucket when the job finishes. Will not be set if you don't request Lustre for your architecture. 
+  * __ROOT_INPUT_NAME__ - A path to folder on the root file system of the host instance that you can write to. By default this folder will also contain your original input zip you uploaded to the input bucket and all of the files stored in secrets manager (through the use of the "shepard_cli secretify" command) will appear here in a folder called "secrets".
+  * __ROOT_OUTPUT_NAME__ - A path to folder on the root file system of the host instance that you can write to. Anything written here will be uploaded to the outputs bucket when the job finishes.
+  * __INPUTS_BUCKET__ - The input or trigger s3 bucket that your architecture uses to batch out jobs. Uploading job zips here will batch out jobs.
+  * __OUTPUTS_BUCKET__ - The output or results s3 bucket that your architecture uses to store results from successful jobs. All outputs will appear here as zip files.      
+  * __ERROR_BUCKET__ - The error s3 bucket that log files are written to in the event of a fatal error in a container. Outputs will appear here as formatted zip files.
+  * __INPUT_ZIP_NAME__ - The name of the original zip file that was dropped into the trigger s3 bucket specified by INPUTS_BUCKET that triggered this job. A copy of this will be located in the path specified by ROOT_INPUT_NAME.
+  * __PATH__ - A variable that is commonly used to denote the location of binaries on machines we thought it would be prudent to exclude from being overwritten.
+  * __HOSTNAME__ - The hostname of the instance your job is running on.
+  * __USES_EFS__ - 'True' if you have requested EFS for this architecture and 'False' if you have not.
+  * __USES_LUSTRE__ - 'True' if you have requested Lustre for this architecture and 'False' if you have not.
+  * __LUSTRE_READ_ONLY_PATH__ - A path to a folder you can read (but not write) all data on the Lustre file system from if you've requested Lustre file system for your architecture. Will not be set if you don't request Lustre for your architecture. 
+  * __EFS_READ_ONLY_PATH__ - A path to a folder you can read (but not write) all data on the EFS from if you've requested an EFS file system for your architecture. Will not be set if you don't request an EFS for your architecture.
+  * __ULIMIT_FILENO__ - This is the maximum number of files you can open in your container. This number can not be made to exceed 1048576 as of 27 May 2020 as this has been found to cause Batch instances running the default AMI to not boot. This will be a string of the number equal to whatever value is given in the cloudformation template for the UlimitsNoFilesOpen parameter (which is by default set to 1048576).
+  * __IS_INVOKED__ - 'True' if this job was created via the API batching endpoint and 'False' if this job was created via s3 upload.
+
+#### Input Location Describing Environment Variables
+The following environment variables describe locations where users can fetch input files from.
+  * __ROOT_INPUT_NAME__ - Calling os.getenv('ROOT_INPUT_NAME') will return a path to folder on the root file system of the host instance that you can write to. By default this folder will also contain your original input zip you uploaded to the input bucket and all of the files stored in secrets manager (through the use of the "shepard_cli secretify" command) will appear here in a folder called "secrets". If you have a EFS or Lustre file system as part of your architecture the original input zip will be fetched to the temporary folders you are afforded write access to on either of those file systems (i.e. EFS_INPUT_NAME and LUSTRE_INPUT_NAME). If you have requested neither file system than the input zip will be fetched to this folder.
+  * __EFS_INPUT_NAME__ - Calling os.getenv('EFS_INPUT_NAME') will return a path to a folder on the EFS file system you can write to if you've requested an EFS file system for your architecture.
+  * __EFS_READ_ONLY_PATH__ - Calling os.getenv('EFS_READ_ONLY_PATH') will return a path to a folder you can read (but not write) all data on the EFS from if you've requested an EFS file system for your architecture.
+  * __LUSTRE_INPUT_NAME__ - Calling os.getenv('LUSTRE_INPUT_NAME') will return a path to a folder on the Lustre file system you can write to if you've requested a Lustre file system for your architecture.
+  * __LUSTRE_READ_ONLY_PATH__ - Calling os.getenv('LUSTRE_READ_ONLY_PATH') will return a path to a folder you can read (but not write) all data on the Lustre file system from if you've requested Lustre file system for your architecture.
+
+#### Output Location Describing Environment Variables
+The following environment variables describe locations where users can deposit files they want to return as outputs from the execution of a job. All other files created during a job's execution not written to an output location are deleted when a job finishes running.
+  * __ROOT_OUTPUT_NAME__ - Calling os.getenv('ROOT_OUTPUT_NAME') will return a path to folder on the root file system of the host instance that you can write to. Anything written here will be uploaded to the outputs bucket when the job finishes.
+  * __EFS_OUTPUT_NAME__ - Calling os.getenv('EFS_OUTPUT_NAME') will return a path to a folder on the EFS file system you can write to if you've requested an EFS file system for your architecture. Anything written here will be uploaded to the outputs bucket when the job finishes.
+  * __LUSTRE_OUTPUT_NAME__ - Calling os.getenv('LUSTRE_OUTPUT_NAME') will return a path to a folder on the Lustre file system you can write to if you've requested a Lustre file system for your architecture. Anything written here will be uploaded to the outputs bucket when the job finishes.
+
+#### Conditional Toggles Environment Variables
+The following environment variables can be queried during job execution to determine whether a Flock has an EFS and/or a Lustre file system available for compute jobs to use.
+ * __USES_EFS__ - Calling os.getenv('USES_EFS') will return "True" if you've requested an EFS file system for your architecture and "False" if you have not requested an EFS file system for your architecture.
+ * __USES_LUSTRE__ - Calling os.getenv('USES_LUSTRE') will return "True" if you've requested a Lustre file system for your architecture and "False" if you have not requested a Lustre file system for your architecture.
 
 ### Detailed Documentation on Configuration Options for Shepard
 
