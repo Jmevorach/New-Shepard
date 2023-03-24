@@ -1106,7 +1106,7 @@ def auto_configure(cloudformation_stack_name,account_number,role_to_assume_to_ta
 
     #get DynamoDB table from CFN output
     dynamo_db_table_arn = search_result_dictionary['DynamoDBTableARN']
-    data['shepard_s3_bucket_to_upload_to'] = str(dynamo_db_table_arn)
+    data['shepard_dynamo_db_to_query'] = str(dynamo_db_table_arn)
 
     #get secret store from CFN output
     secrets_manager_name = search_result_dictionary['SecretsManagerName']
